@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:raylex/logic/playerLogic.dart';
 
 class GroupPlayerControl extends StatefulWidget {
   @override
@@ -80,16 +81,14 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                     _animationController.reverse();
                     setState(() {
                       isPlaying = false;
-                      platform.invokeMethod("pauseMusic");
+                      PlayerLogic().pauseMusic();
                     });
                   }
                   else{
                     _animationController.forward();
                     setState(() {
                       isPlaying = true;
-                      platform.invokeMethod("playMusic",<String, String>{
-                        'url': "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                      });
+                      PlayerLogic().playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
                     });
                   }
                 },
