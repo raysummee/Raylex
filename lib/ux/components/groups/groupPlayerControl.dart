@@ -8,10 +8,10 @@ class GroupPlayerControl extends StatefulWidget {
 }
 
 class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProviderStateMixin{
-  double _playerSeekValue = 0;
+  Duration _playerSeekValue = Duration(seconds: 0);
   AnimationController _animationController;
   bool isPlaying = false;
-  static const platform = const MethodChannel("com.raysummee.raylex/audio");
+  PlayerLogic playerLogic;
   
   @override
   void initState(){
@@ -20,16 +20,23 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
+    playerLogic = PlayerLogic();
+    playerLogic.onAudioPositionChanged.listen((pos) {
+      setState(() {
+        _playerSeekValue = pos;
+      });
+    });
   }
 
   @override
   void dispose(){
     super.dispose();
     _animationController.dispose();
+    playerLogic.pauseMusic();
   }
   onPlayerSeekChange(double pos){
     setState(() {
-      _playerSeekValue = pos;
+      _playerSeekValue = Duration(seconds: pos.toInt());
     });
   }
  
@@ -48,10 +55,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
               thumbColor: Colors.blue.shade900,
             ),
             child: Slider(
-              max: 100,
-              min: 0,   
-              value: _playerSeekValue, 
-              onChanged: (double pos)=> onPlayerSeekChange(pos),
+              value: _playerSeekValue.inSeconds.toDouble(),
+              min: 0,
+              max: 10,
+              onChanged: (double pos)=> {onPlayerSeekChange(pos)},
             ),
           )
         ),
@@ -81,14 +88,14 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                     _animationController.reverse();
                     setState(() {
                       isPlaying = false;
-                      PlayerLogic().pauseMusic();
+                      playerLogic.pauseMusic();
                     });
                   }
                   else{
                     _animationController.forward();
                     setState(() {
                       isPlaying = true;
-                      PlayerLogic().playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+                      playerLogic.playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
                     });
                   }
                 },

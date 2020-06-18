@@ -86,6 +86,7 @@ public class MainActivity extends FlutterActivity {
         }else{
             initExoPlayer(uri);
         }
+
         handler.post(sendData);
     }
 
