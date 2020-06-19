@@ -23,11 +23,12 @@ class PlayerLogic{
 
   PlayerLogic(){
     _platform.setMethodCallHandler(_audioPlayerStateChange);
+    onInstanceIsPlaying().then((isPlaying) => {
+      _playerState = isPlaying?PlayerState.PLAYING:PlayerState.PAUSED,
+      print("log ${_playerState.toString()}")
+    });
     print("constructor");
   }
-
-
-  
   
   void playMusic(String uri){
     _platform.invokeMethod("playMusic", <String, Object>{
@@ -52,6 +53,10 @@ class PlayerLogic{
   Duration get duration => _duration;
 
   Stream<Duration> get onAudioPositionChanged => _playerPositionController.stream;
+
+  Future<bool> onInstanceIsPlaying() async{
+    return await _platform.invokeMethod("onInstanceIsPlaying");
+  }
 
   Future<void> _audioPlayerStateChange(MethodCall call) async{
     switch(call.method){

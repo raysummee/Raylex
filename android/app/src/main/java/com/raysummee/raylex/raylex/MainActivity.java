@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.raysummee.raylex.raylex.player.PlayerStateListener;
 
 import io.flutter.Log;
 import io.flutter.app.FlutterActivity;
@@ -50,6 +51,9 @@ public class MainActivity extends FlutterActivity {
                         case "init":
                             handler.post(sendData);
                             break;
+                        case "onInstanceIsPlaying":
+                            result.success(onInstanceIsPlaying());
+                            break;
                         default:
                             result.notImplemented();
                     }
@@ -77,6 +81,8 @@ public class MainActivity extends FlutterActivity {
         );
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
+        PlayerStateListener playerEventListener = new PlayerStateListener(channel, exoPlayer);
+        exoPlayer.addListener(playerEventListener);
         //handler.post(sendData);
     }
 
@@ -96,7 +102,10 @@ public class MainActivity extends FlutterActivity {
                 channel.invokeMethod("audio,onPause",null);
                 break;
             case Player.STATE_READY:
-                channel.invokeMethod("audio.onStart", exoPlayer.getDuration());
+                if(exoPlayer.getPlayWhenReady())
+                    channel.invokeMethod("audio.onStart", exoPlayer.getDuration());
+                else
+                    channel.invokeMethod("audio.onPause", null);
                 break;
             case Player.STATE_ENDED:
                 channel.invokeMethod("audio.onStop", null);
@@ -118,6 +127,11 @@ public class MainActivity extends FlutterActivity {
         if (exoPlayer!=null){
             exoPlayer.seekTo(position.longValue());
         }
+    }
+
+
+    private boolean onInstanceIsPlaying(){
+        return exoPlayer != null && exoPlayer.getPlaybackState() == Player.STATE_READY && exoPlayer.getPlayWhenReady();
     }
 
 

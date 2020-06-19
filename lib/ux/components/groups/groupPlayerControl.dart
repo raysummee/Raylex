@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:raylex/logic/playerLogic.dart';
 
@@ -12,6 +14,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   bool isPlaying = false;
   double duration=10;
   PlayerLogic playerLogic;
+  StreamSubscription _subscriptionAudioPositionChanged;
+  StreamSubscription _subscriptionPlayerStateChanged;
   
   @override
   void initState(){
@@ -21,26 +25,33 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
       duration: Duration(milliseconds: 300),
     );
     playerLogic = PlayerLogic();
-    playerLogic.onAudioPositionChanged.listen((pos) {
+    _subscriptionAudioPositionChanged = playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
       });
     });
-    playerLogic.onPlayerStateChanged.listen((state) {
+    _subscriptionPlayerStateChanged = playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
       if(state == PlayerState.PLAYING){
         setState(() {
           isPlaying = true;
         });
         _animationController.forward();
-        print("playing");
       }
-      else{
+      if(state == PlayerState.PAUSED){
         setState(() {
           isPlaying = false;
         });
-        print("not playing");
+        _animationController.reverse();
       }
+    });
+    playerLogic.onInstanceIsPlaying().then((isP) {
+      setState(() {
+        isPlaying = isP;
+        if(isP){
+          _animationController.forward();
+        }
+      });
     });
   }
 
@@ -48,6 +59,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   void dispose(){
     super.dispose();
     _animationController.dispose();
+    _subscriptionPlayerStateChanged.cancel();
+    _subscriptionAudioPositionChanged.cancel();
   }
   onPlayerSeekChange(double pos){
     setState(() {
@@ -101,21 +114,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 ),
                 onPressed: (){
                   if(isPlaying){
-                    _animationController.reverse();
                     playerLogic.pauseMusic();
-                    setState(() {
-                      isPlaying=false;
-                    });
                   }
                   else{
-                    _animationController.forward();
                     playerLogic.playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-                    setState(() {
-                      duration = playerLogic.duration.inSeconds.toDouble();
-                      setState(() {
-                        isPlaying=true;
-                      });
-                    });
                   }
                 },
               ),
