@@ -47,6 +47,9 @@ public class MainActivity extends FlutterActivity {
                         case "seekTo":
                             seekToMusic(call.argument("seek"));
                             break;
+                        case "init":
+                            handler.post(sendData);
+                            break;
                         default:
                             result.notImplemented();
                     }
@@ -74,6 +77,7 @@ public class MainActivity extends FlutterActivity {
         );
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
+        //handler.post(sendData);
     }
 
     private void playMusic(String uri){
@@ -86,8 +90,22 @@ public class MainActivity extends FlutterActivity {
         }else{
             initExoPlayer(uri);
         }
-
         handler.post(sendData);
+        switch (exoPlayer.getPlaybackState()){
+            case Player.STATE_IDLE:
+                channel.invokeMethod("audio,onPause",null);
+                break;
+            case Player.STATE_READY:
+                channel.invokeMethod("audio.onStart", exoPlayer.getDuration());
+                break;
+            case Player.STATE_ENDED:
+                channel.invokeMethod("audio.onStop", null);
+                break;
+            case Player.STATE_BUFFERING:
+                channel.invokeMethod("audio.onBuffer", null);
+                break;
+        }
+
     }
 
     private void pauseMusic(){
@@ -96,9 +114,9 @@ public class MainActivity extends FlutterActivity {
         }
     }
 
-    private void seekToMusic(Long position){
+    private void seekToMusic(Double position){
         if (exoPlayer!=null){
-            exoPlayer.seekTo(position);
+            exoPlayer.seekTo(position.longValue());
         }
     }
 

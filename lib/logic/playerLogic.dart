@@ -3,13 +3,14 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+//channel id for the audio operation
 const MethodChannel _platform = const MethodChannel("com.Raysummee.raylex/audio");
 
 enum PlayerState{
   STOPPED,
   PLAYING,
   PAUSED,
-  COMPLETED,
+  BUFFERING,
 }
 
 class PlayerLogic{
@@ -22,6 +23,7 @@ class PlayerLogic{
 
   PlayerLogic(){
     _platform.setMethodCallHandler(_audioPlayerStateChange);
+    print("constructor");
   }
 
 
@@ -38,7 +40,7 @@ class PlayerLogic{
   }
 
   void seekToMusic(double seek){
-    _platform.invokeMethod("seekToMusic",<String, Object>{
+    _platform.invokeMethod("seekTo",<String, Object>{
       "seek": seek,
     });
   }
@@ -54,6 +56,7 @@ class PlayerLogic{
   Future<void> _audioPlayerStateChange(MethodCall call) async{
     switch(call.method){
       case "audio.onCurrentPosition":
+        //assert(_playerState == PlayerState.PLAYING);
         _playerPositionController.add(Duration(milliseconds: call.arguments));
         break;
       case "audio.onStart":
@@ -70,9 +73,9 @@ class PlayerLogic{
         _playerState = PlayerState.STOPPED;
         _playerStateController.add(PlayerState.STOPPED);
         break;
-      case "audio.onComplete":
-        _playerState = PlayerState.COMPLETED;
-        _playerStateController.add(PlayerState.COMPLETED);
+      case "audio.onBuffer":
+        _playerState = PlayerState.BUFFERING;
+        _playerStateController.add(PlayerState.BUFFERING);
         break;
       case "audio.onError":
         _playerState = PlayerState.STOPPED;

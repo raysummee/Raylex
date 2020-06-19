@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:raylex/logic/playerLogic.dart';
 
 class GroupPlayerControl extends StatefulWidget {
@@ -11,6 +10,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   Duration _playerSeekValue = Duration(seconds: 0);
   AnimationController _animationController;
   bool isPlaying = false;
+  double duration=10;
   PlayerLogic playerLogic;
   
   @override
@@ -26,18 +26,34 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
         _playerSeekValue = pos;
       });
     });
+    playerLogic.onPlayerStateChanged.listen((state) {
+      print("onStateChanged");
+      if(state == PlayerState.PLAYING){
+        setState(() {
+          isPlaying = true;
+        });
+        _animationController.forward();
+        print("playing");
+      }
+      else{
+        setState(() {
+          isPlaying = false;
+        });
+        print("not playing");
+      }
+    });
   }
 
   @override
   void dispose(){
     super.dispose();
     _animationController.dispose();
-    playerLogic.pauseMusic();
   }
   onPlayerSeekChange(double pos){
     setState(() {
-      _playerSeekValue = Duration(seconds: pos.toInt());
+      _playerSeekValue = Duration(seconds: (pos).toInt());
     });
+    playerLogic.seekToMusic(pos);
   }
  
   @override
@@ -57,7 +73,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
             child: Slider(
               value: _playerSeekValue.inSeconds.toDouble(),
               min: 0,
-              max: 10,
+              max: 100,
               onChanged: (double pos)=> {onPlayerSeekChange(pos)},
             ),
           )
@@ -86,16 +102,19 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 onPressed: (){
                   if(isPlaying){
                     _animationController.reverse();
+                    playerLogic.pauseMusic();
                     setState(() {
-                      isPlaying = false;
-                      playerLogic.pauseMusic();
+                      isPlaying=false;
                     });
                   }
                   else{
                     _animationController.forward();
+                    playerLogic.playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
                     setState(() {
-                      isPlaying = true;
-                      playerLogic.playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+                      duration = playerLogic.duration.inSeconds.toDouble();
+                      setState(() {
+                        isPlaying=true;
+                      });
                     });
                   }
                 },

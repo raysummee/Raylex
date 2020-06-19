@@ -11,17 +11,22 @@ class PlayerUIPage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            PlayerAppBar(),
-            PlayerAlbumArtCard(),
-            GroupPlayerTextMeta(),
-            GroupPlayerControl(),
-            GroupPlayerAccControl(),
-          ],
-        )
+      body: Container(
+        decoration: BoxDecoration(
+          
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              PlayerAppBar(),
+              PlayerAlbumArtCard(),
+              GroupPlayerTextMeta(),
+              GroupPlayerControl(),
+              GroupPlayerAccControl(),
+            ],
+          )
+        ),
       ),
     );
   }

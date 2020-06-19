@@ -17,8 +17,7 @@ class _NavPagesState extends State<NavPages> {
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          LibraryPages(),
-          PlayerUIPage()
+          LibraryPages()
         ],
       ),
       bottomNavigationBar: Container(

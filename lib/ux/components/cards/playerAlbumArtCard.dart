@@ -9,10 +9,10 @@ class PlayerAlbumArtCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey,
+            color: Colors.black38,
             spreadRadius: 1,
             blurRadius: 7,
-            offset: Offset(0, 5)
+            offset: Offset(0, 4)
           )
         ]
       ),
