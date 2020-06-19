@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
-import 'package:raylex/logic/playerLogic.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class GroupPlayerControl extends StatefulWidget {
   @override
@@ -99,7 +100,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 iconSize: 45,
                 alignment: Alignment.center,
                 icon: Icon(
-                  Icons.fast_rewind,
+                  FlutterIcons.rewind_fea,
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){},
@@ -125,7 +126,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 iconSize: 45,
                 alignment: Alignment.center,
                 icon: Icon(
-                  Icons.fast_forward,
+                  FlutterIcons.fast_forward_fea,
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){},

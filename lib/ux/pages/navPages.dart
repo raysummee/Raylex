@@ -1,5 +1,4 @@
-import 'package:raylex/ux/pages/libraryPages.dart';
-import 'package:raylex/ux/pages/playerUIPage.dart';
+import 'package:Raylex/ux/pages/libraryPages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
-import 'package:raylex/ux/components/appBars/welcomeHomeRow.dart';
-import 'package:raylex/ux/components/lists/horizontalRoundedList.dart';
+import 'package:Raylex/ux/components/appBars/welcomeHomeRow.dart';
+import 'package:Raylex/ux/components/lists/horizontalRoundedList.dart';
 import 'package:flutter/material.dart';
 
 class LibraryPages extends StatelessWidget {

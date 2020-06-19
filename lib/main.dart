@@ -1,5 +1,5 @@
-import 'package:raylex/ux/pages/navPages.dart';
-import 'package:raylex/ux/pages/playerUIPage.dart';
+import 'package:Raylex/ux/pages/navPages.dart';
+import 'package:Raylex/ux/pages/playerUIPage.dart';
 import 'package:flutter/material.dart';
 
 void main()=>runApp(Launch());

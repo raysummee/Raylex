@@ -1,4 +1,4 @@
-import 'package:raylex/logic/models/playlistData.dart';
+import 'package:Raylex/logic/models/playlistData.dart';
 import 'package:flutter/foundation.dart';
 
 class Playlist with ChangeNotifier{

@@ -1,4 +1,4 @@
-import 'package:raylex/ux/components/cards/circularImageCard.dart';
+import 'package:Raylex/ux/components/cards/circularImageCard.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalRoundedList extends StatelessWidget {
