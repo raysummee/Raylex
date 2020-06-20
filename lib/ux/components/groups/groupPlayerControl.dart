@@ -5,18 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class GroupPlayerControl extends StatefulWidget {
+  final String uri;
+  final Duration totalDuration;
+  GroupPlayerControl(this.uri, this.totalDuration);
   @override
   _GroupPlayerControlState createState() => _GroupPlayerControlState();
 }
 
 class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProviderStateMixin{
-  Duration _playerSeekValue = Duration(seconds: 0);
+  Duration _playerSeekValue = Duration();
+  Duration _audioDuration = Duration();
   AnimationController _animationController;
   bool isPlaying = false;
-  double duration=10;
   PlayerLogic playerLogic;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
+  StreamSubscription _subscriptionAudioDurationChanged;
+  
   
   @override
   void initState(){
@@ -25,10 +30,18 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
+    
     playerLogic = PlayerLogic();
     _subscriptionAudioPositionChanged = playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
+      });
+    });
+    _subscriptionAudioDurationChanged = playerLogic.onDurationChanged.listen((duration) {
+      setState(() {
+        print(duration.inMilliseconds.toString());
+        if(duration != Duration.zero)
+        _audioDuration = duration;
       });
     });
     _subscriptionPlayerStateChanged = playerLogic.onPlayerStateChanged.listen((state) {
@@ -62,10 +75,11 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     _animationController.dispose();
     _subscriptionPlayerStateChanged.cancel();
     _subscriptionAudioPositionChanged.cancel();
+    _subscriptionAudioDurationChanged.cancel();
   }
   onPlayerSeekChange(double pos){
     setState(() {
-      _playerSeekValue = Duration(seconds: (pos).toInt());
+      _playerSeekValue = Duration(milliseconds: (pos).toInt());
     });
     playerLogic.seekToMusic(pos);
   }
@@ -85,9 +99,9 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
               thumbColor: Colors.blue.shade900,
             ),
             child: Slider(
-              value: _playerSeekValue.inSeconds.toDouble(),
+              value: _playerSeekValue.inMilliseconds.toDouble(),
               min: 0,
-              max: 100,
+              max: _audioDuration.inMilliseconds.toDouble(),
               onChanged: (double pos)=> {onPlayerSeekChange(pos)},
             ),
           )
@@ -118,7 +132,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                     playerLogic.pauseMusic();
                   }
                   else{
-                    playerLogic.playMusic("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+                    playerLogic.playMusic(widget.uri);
                   }
                 },
               ),

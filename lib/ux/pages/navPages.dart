@@ -2,23 +2,29 @@ import 'package:Raylex/ux/pages/libraryPages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+//nav pages 
 class NavPages extends StatefulWidget {
   @override
   _NavPagesState createState() => _NavPagesState();
 }
 
+//nav pages state
 class _NavPagesState extends State<NavPages> {
+  //the default index and initialising index of the nav bar
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      //body of the nav bar 
       body: IndexedStack(
         index: _currentIndex,
+        //the body of the nav should be here index wise
         children: <Widget>[
           LibraryPages()
         ],
       ),
+      //nav bar
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10)

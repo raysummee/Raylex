@@ -8,9 +8,7 @@ class Launch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        "playerUI": (context)=> PlayerUIPage(),
-      },
+      
       home: NavPages(),
     );
   }

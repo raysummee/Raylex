@@ -1,9 +1,10 @@
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/ux/components/cards/circularImageCard.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalRoundedList extends StatelessWidget {
   final String headerName;
-  final List<String> contentList;
+  final List<SongInfo> contentList;
   HorizontalRoundedList({
     @required this.headerName,
     @required this.contentList,
@@ -31,7 +32,7 @@ class HorizontalRoundedList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: contentList.length,
             itemBuilder: (context, index){
-              return CircularImageCard(contentList.elementAt(index));
+              return CircularImageCard(contentList.elementAt(index).title);
             },
           ),
         ),

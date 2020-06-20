@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 //channel id for the audio operation
 const MethodChannel _platform = const MethodChannel("com.Raysummee.raylex/audio");
 
+
 enum PlayerState{
   STOPPED,
   PLAYING,
@@ -17,6 +18,7 @@ class PlayerLogic{
   
   final StreamController<PlayerState> _playerStateController = StreamController.broadcast();
   final StreamController<Duration> _playerPositionController = StreamController.broadcast();
+  final StreamController<Duration> _songDurationController = StreamController.broadcast();
 
   PlayerState _playerState = PlayerState.STOPPED;
   Duration _duration = const Duration();
@@ -30,18 +32,18 @@ class PlayerLogic{
     print("constructor");
   }
   
-  void playMusic(String uri){
-    _platform.invokeMethod("playMusic", <String, Object>{
+  void playMusic(String uri) async{
+    await _platform.invokeMethod("playMusic", <String, Object>{
       "url": uri,
     });
   }
 
-  void pauseMusic(){
-    _platform.invokeMethod("pauseMusic");
+  void pauseMusic() async{
+    await _platform.invokeMethod("pauseMusic");
   }
 
-  void seekToMusic(double seek){
-    _platform.invokeMethod("seekTo",<String, Object>{
+  void seekToMusic(double seek) async{
+    await _platform.invokeMethod("seekTo",<String, Object>{
       "seek": seek,
     });
   }
@@ -49,6 +51,8 @@ class PlayerLogic{
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
 
   PlayerState get state => _playerState;
+
+  Stream<Duration> get onDurationChanged => _songDurationController.stream;
 
   Duration get duration => _duration;
 
@@ -69,6 +73,7 @@ class PlayerLogic{
         _playerStateController.add(PlayerState.PLAYING);
         print('PLAYING ${call.arguments}');
         _duration = Duration(milliseconds: call.arguments);
+        _songDurationController.add(Duration(milliseconds: call.arguments));
         break;
       case "audio.onPause":
         _playerState = PlayerState.PAUSED;

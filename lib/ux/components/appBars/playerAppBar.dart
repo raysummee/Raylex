@@ -16,7 +16,7 @@ class PlayerAppBar extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: IconButton(
                 icon: Icon(Icons.arrow_back_ios), 
-                onPressed: (){}
+                onPressed: (){Navigator.pop(context);}
               ),
             )
           ),
