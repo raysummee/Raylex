@@ -14,7 +14,7 @@ class VerticalListSimple extends StatelessWidget {
         itemBuilder: (context, index){
           return ListTile(
             title: Text(songinfo.elementAt(index).title),
-            onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerUIPage(songinfo.elementAt(index).uri, songinfo.elementAt(index).duration))),
+            onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerUIPage(songinfo.elementAt(index)))),
           );
         },
       ),

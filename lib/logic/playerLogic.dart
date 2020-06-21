@@ -31,6 +31,13 @@ class PlayerLogic{
     });
     print("constructor");
   }
+
+  void getInitDuration() async{
+    int initDuration = await _platform.invokeMethod("getDuration");
+    
+    _duration = Duration(milliseconds: initDuration);
+    _songDurationController.add(Duration(milliseconds: initDuration));
+  }
   
   void playMusic(String uri) async{
     await _platform.invokeMethod("playMusic", <String, Object>{

@@ -1,9 +1,8 @@
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/songQuery.dart';
 import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
-import 'package:Raylex/ux/components/appBars/welcomeHomeRow.dart';
-import 'package:Raylex/ux/components/lists/horizontalRoundedList.dart';
 import 'package:Raylex/ux/components/lists/verticalListSimple.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LibraryPages extends StatefulWidget {
@@ -22,11 +21,14 @@ class _LibraryPagesState extends State<LibraryPages> {
       children: <Widget>[
         LibraryAppBar(),
         FutureBuilder(
-          initialData: "data",
           future: SongQuery.allSongs(),
           builder: (context, snap){
-            List<SongInfo> list = snap.data;
-            return  VerticalListSimple(list);
+            if(snap.data!=null){
+              List<SongInfo> list = snap.data;
+              return  VerticalListSimple(list);
+            }else{
+              return Center(child: CupertinoActivityIndicator());
+            }
           }
         ),      
       ],

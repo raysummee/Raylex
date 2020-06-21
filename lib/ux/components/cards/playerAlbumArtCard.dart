@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class PlayerAlbumArtCard extends StatelessWidget {
+  final String albumArt;
+  PlayerAlbumArtCard(this.albumArt);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +25,7 @@ class PlayerAlbumArtCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(40),
         child: Image(
-          image: AssetImage("lib/assets/images/ZUWOqcT.jpg"),
+          image: albumArt!=null?FileImage(File(albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
           fit: BoxFit.cover,
         ),
       )

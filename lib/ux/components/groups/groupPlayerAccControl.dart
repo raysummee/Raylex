@@ -19,7 +19,7 @@ class GroupPlayerAccControl extends StatelessWidget {
               Container(
                 margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: Text(
-                  "Dan's Speaker",
+                  "User's Speaker",
                   style: TextStyle(
                     color: Colors.blue.shade900,
                     fontSize: 15,

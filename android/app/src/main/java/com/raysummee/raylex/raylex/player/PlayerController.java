@@ -23,6 +23,7 @@ import io.flutter.plugin.common.MethodChannel;
 public class PlayerController{
     Context context;
     MethodChannel channel;
+    Uri lastUri;
     public PlayerController(Context context, MethodChannel channel){
         this.context = context;
         this.channel = channel;
@@ -32,6 +33,10 @@ public class PlayerController{
     private SimpleExoPlayer exoPlayer;
 
     public void initExoPlayer(String uri) {
+        lastUri = Uri.parse(uri);
+        if(exoPlayer!=null){
+            exoPlayer.release();
+        }
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(
                 context,
                 null,
@@ -58,7 +63,7 @@ public class PlayerController{
     }
 
     public void playMusic(String uri){
-        if (exoPlayer!=null){
+        if (exoPlayer!=null && lastUri == Uri.parse(uri)){
             if (!exoPlayer.getPlayWhenReady() || exoPlayer.getBufferedPosition()!=0){
                 exoPlayer.setPlayWhenReady(true);
             }else {
@@ -97,6 +102,14 @@ public class PlayerController{
     public void seekToMusic(Double position){
         if (exoPlayer!=null){
             exoPlayer.seekTo(position.longValue());
+        }
+    }
+
+    public long getAudioDuration(){
+        if(exoPlayer!=null){
+            return exoPlayer.getDuration();
+        }else{
+            return 0;
         }
     }
 

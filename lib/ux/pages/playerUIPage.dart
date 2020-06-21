@@ -1,3 +1,4 @@
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/ux/components/appBars/playerAppBar.dart';
 import 'package:Raylex/ux/components/cards/playerAlbumArtCard.dart';
 import 'package:Raylex/ux/components/groups/groupPlayerAccControl.dart';
@@ -7,9 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayerUIPage extends StatelessWidget{
-  final int duration;
-  final String uri;
-  PlayerUIPage(this.uri, this.duration);
+  final SongInfo songInfo;
+  PlayerUIPage(this.songInfo);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +26,11 @@ class PlayerUIPage extends StatelessWidget{
               //the top portion playlist name, back, menu consist here
               PlayerAppBar(),
               //the album art is consist here
-              PlayerAlbumArtCard(),
+              PlayerAlbumArtCard(songInfo.albumArt),
               //song name and artist name here
-              GroupPlayerTextMeta(),
+              GroupPlayerTextMeta(songInfo.title, songInfo.artist),
               //basics controls like seek, play pause, next, previous
-              GroupPlayerControl(uri, Duration(seconds: duration)),
+              GroupPlayerControl(songInfo.uri, Duration(seconds: songInfo.duration)),
               //acco controls like mute speaker of headset set shuffle and repeats
               GroupPlayerAccControl(),
             ],

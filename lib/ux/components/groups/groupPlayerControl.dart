@@ -30,8 +30,13 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
+
+    
     
     playerLogic = PlayerLogic();
+    playerLogic.getInitDuration();
+    
+    print("initial $_audioDuration");
     _subscriptionAudioPositionChanged = playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
@@ -67,6 +72,9 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
         }
       });
     });
+    if(!isPlaying){
+      playerLogic.playMusic(widget.uri);
+    }
   }
 
   @override
@@ -98,11 +106,14 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
               trackHeight: 6,
               thumbColor: Colors.blue.shade900,
             ),
-            child: Slider(
+            child: _audioDuration!=Duration.zero?Slider(
               value: _playerSeekValue.inMilliseconds.toDouble(),
               min: 0,
               max: _audioDuration.inMilliseconds.toDouble(),
               onChanged: (double pos)=> {onPlayerSeekChange(pos)},
+            ):Slider(
+              value: 0,
+              onChanged: (pos){},
             ),
           )
         ),

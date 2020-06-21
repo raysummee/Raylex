@@ -42,6 +42,9 @@ public class MainActivity extends FlutterActivity {
                         case "onInstanceIsPlaying":
                             result.success(playerController.onInstanceIsPlaying());
                             break;
+                        case "getDuration":
+                            result.success(playerController.getAudioDuration());
+                            break;
                         default:
                             result.notImplemented();
                 }

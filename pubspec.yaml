@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_icons: ^1.1.0
+  provider: ^3.0.0
+
   
 
 

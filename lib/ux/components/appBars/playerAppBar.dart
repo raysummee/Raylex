@@ -34,7 +34,7 @@ class PlayerAppBar extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Songs that slaps",
+                    "All songs",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,

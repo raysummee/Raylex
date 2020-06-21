@@ -20,5 +20,14 @@ class PlayerState with ChangeNotifier{
     notifyListeners();
   }
 
+  Duration _audioDuration;
+
+  Duration get audioDuration => _audioDuration;
+
+  set audioDuration(Duration audioDuration){
+    _audioDuration = audioDuration;
+    notifyListeners();
+  }
+
 
 }
