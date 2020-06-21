@@ -27,7 +27,18 @@ class _LibraryPagesState extends State<LibraryPages> {
               List<SongInfo> list = snap.data;
               return  VerticalListSimple(list);
             }else{
-              return Center(child: CupertinoActivityIndicator());
+              return Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: CupertinoActivityIndicator()),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Text("Try closing and reopenning the app!")
+                    )
+                  ],
+                ),
+              );
             }
           }
         ),      

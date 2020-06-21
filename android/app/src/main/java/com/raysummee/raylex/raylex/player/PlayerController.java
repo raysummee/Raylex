@@ -23,7 +23,7 @@ import io.flutter.plugin.common.MethodChannel;
 public class PlayerController{
     Context context;
     MethodChannel channel;
-    Uri lastUri;
+    String lastUri;
     public PlayerController(Context context, MethodChannel channel){
         this.context = context;
         this.channel = channel;
@@ -33,7 +33,7 @@ public class PlayerController{
     private SimpleExoPlayer exoPlayer;
 
     public void initExoPlayer(String uri) {
-        lastUri = Uri.parse(uri);
+        lastUri = uri;
         if(exoPlayer!=null){
             exoPlayer.release();
         }
@@ -63,7 +63,7 @@ public class PlayerController{
     }
 
     public void playMusic(String uri){
-        if (exoPlayer!=null && lastUri == Uri.parse(uri)){
+        if (exoPlayer!=null && lastUri.equals(uri)){
             if (!exoPlayer.getPlayWhenReady() || exoPlayer.getBufferedPosition()!=0){
                 exoPlayer.setPlayWhenReady(true);
             }else {
