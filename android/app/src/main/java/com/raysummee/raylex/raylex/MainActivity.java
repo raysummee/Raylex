@@ -12,44 +12,13 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
 
 public class MainActivity extends FlutterActivity {
-    private static final String CHANNELPLAYER = "com.Raysummee.raylex/audio";
-    private static final String CHANNELFINDER = "com.Raysummee.raylex/finder";
 
-    private MethodChannel channelPlayer;
-    private MethodChannel channelFinder;
-    private PlayerController playerController;
-    private MusicFinderPlugin musicFinderPlugin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        channelPlayer = new MethodChannel(getFlutterView(), CHANNELPLAYER);
-        playerController = new PlayerController(this, channelPlayer);
-        channelFinder = new MethodChannel(getFlutterView(), CHANNELFINDER);
-        musicFinderPlugin = new MusicFinderPlugin(this, channelFinder);
-        channelPlayer.setMethodCallHandler(
-            (call, result) -> {
-                switch (call.method){
-                        case "playMusic":
-                            playerController.playMusic(call.argument("url"));
-                            break;
-                        case "pauseMusic":
-                            playerController.pauseMusic();
-                            break;
-                        case "seekTo":
-                            playerController.seekToMusic(call.argument("seek"));
-                            break;
-                        case "onInstanceIsPlaying":
-                            result.success(playerController.onInstanceIsPlaying());
-                            break;
-                        case "getDuration":
-                            result.success(playerController.getAudioDuration());
-                            break;
-                        default:
-                            result.notImplemented();
-                }
-            }
-        );
+        PlayerController.registerWith(registrarFor("com.Raysummee.raylex/audio"));
+        MusicFinderPlugin.registerWith(registrarFor("com.Raysummee.raylex/finder"));
 
     }
 

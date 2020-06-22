@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
@@ -30,6 +31,14 @@ public class MusicFinderPlugin implements MethodChannel.MethodCallHandler,Plugin
     private boolean executeAfterPermissionGranted;
     private MethodChannel.Result pendingResult;
     private MethodChannel channel;
+    private static MusicFinderPlugin instance;
+
+    public static void registerWith(PluginRegistry.Registrar registrar){
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "com.Raysummee.raylex/finder");
+        instance = new MusicFinderPlugin(registrar.activity(), channel);
+        registrar.addRequestPermissionsResultListener(instance);
+        channel.setMethodCallHandler(instance);
+    }
 
     public MusicFinderPlugin(Activity activity, MethodChannel channel) {
         this.activity = activity;
@@ -124,6 +133,8 @@ public class MusicFinderPlugin implements MethodChannel.MethodCallHandler,Plugin
 
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.e("permission","started");
+
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
             for (int i = 0; i < permissions.length; i++) {
                 String permission = permissions[i];
@@ -131,7 +142,9 @@ public class MusicFinderPlugin implements MethodChannel.MethodCallHandler,Plugin
 
                 if (permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Log.e("permission","granted");
                         if (executeAfterPermissionGranted) {
+                            Log.e("permisson","executing");
                             pendingResult.success(getData());
                             pendingResult = null;
                             arguments = null;
@@ -146,7 +159,7 @@ public class MusicFinderPlugin implements MethodChannel.MethodCallHandler,Plugin
     }
 
     private void setNoPermissionsError() {
-        pendingResult.error("permission", "you don't have the user permission to access the camera", null);
+        pendingResult.error("permission", "you don't have the user permission to access the storage", null);
         pendingResult = null;
         arguments = null;
     }

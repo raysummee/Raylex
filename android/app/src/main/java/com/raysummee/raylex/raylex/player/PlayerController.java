@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
@@ -14,19 +16,29 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.raysummee.raylex.raylex.finder.MusicFinderPlugin;
 
 import java.lang.reflect.Method;
 
 import io.flutter.Log;
+import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.PluginRegistry;
 
-public class PlayerController{
+public class PlayerController implements MethodChannel.MethodCallHandler {
     Context context;
     MethodChannel channel;
     String lastUri;
+    static PlayerController instance;
     public PlayerController(Context context, MethodChannel channel){
         this.context = context;
         this.channel = channel;
+    }
+
+    public static void registerWith(PluginRegistry.Registrar registrar){
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "com.Raysummee.raylex/audio");
+        instance = new PlayerController(registrar.activity(), channel);
+        channel.setMethodCallHandler(instance);
     }
 
     private final android.os.Handler handler = new Handler();
@@ -134,4 +146,28 @@ public class PlayerController{
             }
         }
     };
+
+
+    @Override
+    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        switch (call.method){
+            case "playMusic":
+                playMusic(call.argument("url"));
+                break;
+            case "pauseMusic":
+                pauseMusic();
+                break;
+            case "seekTo":
+                seekToMusic(call.argument("seek"));
+                break;
+            case "onInstanceIsPlaying":
+                result.success(onInstanceIsPlaying());
+                break;
+            case "getDuration":
+                result.success(getAudioDuration());
+                break;
+            default:
+                result.notImplemented();
+        }
+    }
 }
