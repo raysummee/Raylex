@@ -1,6 +1,5 @@
 
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 
 //channel id for the audio operation
@@ -17,6 +16,7 @@ enum PlayerState{
 class PlayerLogic{
   
   final StreamController<PlayerState> _playerStateController = StreamController.broadcast();
+  final StreamController<bool> _playerStateSecondaryController = StreamController.broadcast();
   final StreamController<Duration> _playerPositionController = StreamController.broadcast();
   final StreamController<Duration> _songDurationController = StreamController.broadcast();
 
@@ -25,10 +25,7 @@ class PlayerLogic{
 
   PlayerLogic(){
     _platform.setMethodCallHandler(_audioPlayerStateChange);
-    onInstanceIsPlaying().then((isPlaying) => {
-      _playerState = isPlaying?PlayerState.PLAYING:PlayerState.PAUSED,
-      print("log ${_playerState.toString()}")
-    });
+    
     print("constructor");
   }
 
@@ -49,6 +46,10 @@ class PlayerLogic{
     await _platform.invokeMethod("pauseMusic");
   }
 
+  void playPausedMusic() async{
+    await _platform.invokeMethod("playPausedMusic");
+  }
+
   void seekToMusic(double seek) async{
     await _platform.invokeMethod("seekTo",<String, Object>{
       "seek": seek,
@@ -58,6 +59,9 @@ class PlayerLogic{
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
 
   PlayerState get state => _playerState;
+
+  
+  Stream<bool> get onPlayerSecondaryStateChanged => _playerStateSecondaryController.stream;
 
   Stream<Duration> get onDurationChanged => _songDurationController.stream;
 
@@ -78,6 +82,7 @@ class PlayerLogic{
       case "audio.onStart":
         _playerState = PlayerState.PLAYING;
         _playerStateController.add(PlayerState.PLAYING);
+        _playerStateSecondaryController.add(true);
         print('PLAYING ${call.arguments}');
         _duration = Duration(milliseconds: call.arguments);
         _songDurationController.add(Duration(milliseconds: call.arguments));
@@ -85,18 +90,22 @@ class PlayerLogic{
       case "audio.onPause":
         _playerState = PlayerState.PAUSED;
         _playerStateController.add(PlayerState.PAUSED);
+        _playerStateSecondaryController.add(false);
         break;
       case "audio.onStop":
         _playerState = PlayerState.STOPPED;
         _playerStateController.add(PlayerState.STOPPED);
+        _playerStateSecondaryController.add(false);
         break;
       case "audio.onBuffer":
         _playerState = PlayerState.BUFFERING;
         _playerStateController.add(PlayerState.BUFFERING);
+        _playerStateSecondaryController.add(false);
         break;
       case "audio.onError":
         _playerState = PlayerState.STOPPED;
         _playerStateController.add(call.arguments);
+        _playerStateSecondaryController.add(false);
         break;
       default:
         throw ArgumentError("Unknown method ${call.method}");

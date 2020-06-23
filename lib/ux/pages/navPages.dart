@@ -31,7 +31,10 @@ class _NavPagesState extends State<NavPages> {
         ),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10)
+          ),
           child: BottomNavigationBar(
             currentIndex: _currentIndex,
             selectedFontSize: 12,

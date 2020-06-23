@@ -6,7 +6,7 @@ class GroupPlayerAccControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
+      margin: EdgeInsets.fromLTRB(30, 0, 30, 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

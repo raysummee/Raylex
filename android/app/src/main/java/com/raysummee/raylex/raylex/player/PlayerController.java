@@ -130,6 +130,12 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
         return exoPlayer != null && exoPlayer.getPlaybackState() == Player.STATE_READY && exoPlayer.getPlayWhenReady();
     }
 
+    public void playPausedMusic(){
+        if(exoPlayer!=null){
+            exoPlayer.setPlayWhenReady(true);
+        }
+    }
+
 
     private final Runnable sendData = new Runnable(){
         public void run(){
@@ -165,6 +171,9 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
                 break;
             case "getDuration":
                 result.success(getAudioDuration());
+                break;
+            case "playPausedMusic":
+                playPausedMusic();
                 break;
             default:
                 result.notImplemented();

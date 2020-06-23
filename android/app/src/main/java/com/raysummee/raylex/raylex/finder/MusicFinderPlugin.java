@@ -86,6 +86,7 @@ public class MusicFinderPlugin implements MethodChannel.MethodCallHandler,Plugin
     }
 
     private void scanMusicFiles(File[] files) {
+        if(files!=null)
         for (File file: files) {
             if (file.isDirectory())  {
                 scanMusicFiles(file.listFiles());

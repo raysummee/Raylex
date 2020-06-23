@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 
 class GroupPlayerControl extends StatefulWidget {
   final String uri;
@@ -17,40 +18,31 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   Duration _audioDuration = Duration();
   AnimationController _animationController;
   bool isPlaying = false;
-  PlayerLogic playerLogic;
+  PlayerLogic _playerLogic;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
   
-  
   @override
-  void initState(){
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-
-    
-    
-    playerLogic = PlayerLogic();
-    playerLogic.getInitDuration();
-    
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    print("player didchangeddependencies");
     print("initial $_audioDuration");
-    _subscriptionAudioPositionChanged = playerLogic.onAudioPositionChanged.listen((pos) {
+    _subscriptionAudioPositionChanged = _playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
       });
     });
-    _subscriptionAudioDurationChanged = playerLogic.onDurationChanged.listen((duration) {
+    _subscriptionAudioDurationChanged = _playerLogic.onDurationChanged.listen((duration) {
       setState(() {
         print(duration.inMilliseconds.toString());
         if(duration != Duration.zero)
         _audioDuration = duration;
       });
     });
-    _subscriptionPlayerStateChanged = playerLogic.onPlayerStateChanged.listen((state) {
+    _subscriptionPlayerStateChanged = _playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
+      
       if(state == PlayerState.PLAYING){
         setState(() {
           isPlaying = true;
@@ -63,23 +55,43 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
         });
         _animationController.reverse();
       }
+      if(state == PlayerState.STOPPED){
+        setState(() {
+          isPlaying = false;
+        });   
+        _animationController.reverse();
+      }
     });
-    playerLogic.onInstanceIsPlaying().then((isP) {
+    _playerLogic.onInstanceIsPlaying().then((isP) {
       setState(() {
         isPlaying = isP;
         if(isP){
-          _animationController.forward();
+          _animationController.forward(from: _animationController.upperBound);
         }
       });
     });
+    
+  }
+  
+  @override
+  void initState(){
+    super.initState();
+    print("player init");
+    _playerLogic = PlayerLogic();
+    _playerLogic.getInitDuration();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
     if(!isPlaying){
-      playerLogic.playMusic(widget.uri);
+      _playerLogic.playMusic(widget.uri);
     }
   }
 
   @override
   void dispose(){
     super.dispose();
+    print("player dispose");
     _animationController.dispose();
     _subscriptionPlayerStateChanged.cancel();
     _subscriptionAudioPositionChanged.cancel();
@@ -89,7 +101,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     setState(() {
       _playerSeekValue = Duration(milliseconds: (pos).toInt());
     });
-    playerLogic.seekToMusic(pos);
+    _playerLogic.seekToMusic(pos);
   }
  
   @override
@@ -97,6 +109,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     return Column(
       children: <Widget>[
         Container(
+          height: 25,
           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: SliderTheme(
             data: SliderThemeData(
@@ -109,13 +122,51 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
             child: _audioDuration!=Duration.zero?Slider(
               value: _playerSeekValue.inMilliseconds.toDouble(),
               min: 0,
-              max: _audioDuration.inMilliseconds.toDouble(),
+              max: _audioDuration.inMilliseconds.toDouble()+1000,
               onChanged: (double pos)=> {onPlayerSeekChange(pos)},
             ):Slider(
               value: 0,
               onChanged: (pos){},
             ),
           )
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                ((){
+                  if(_audioDuration != Duration.zero){
+                    if(_playerSeekValue.inSeconds%60<10){
+                      return "${_playerSeekValue.inMinutes.toString()}:0${_playerSeekValue.inSeconds%60}";
+                    }else{
+                      return "${_playerSeekValue.inMinutes.toString()}:${_playerSeekValue.inSeconds%60}";
+                    }
+                  }else{
+                    return "0:00";
+                  }
+                }()),
+                style: TextStyle(
+                  color: Colors.blue.shade900,
+                  fontWeight: FontWeight.bold
+                ),    
+              ),
+              Text(
+                ((){
+                  if(_audioDuration.inSeconds%60<10){
+                    return "${_audioDuration.inMinutes.toString()}:0${_audioDuration.inSeconds%60}";
+                  }else{
+                    return "${_audioDuration.inMinutes.toString()}:${_audioDuration.inSeconds%60}";
+                  }
+                }()) ,
+                style: TextStyle(
+                  color: Colors.blue.shade900,
+                  fontWeight: FontWeight.bold
+                ),     
+              )
+            ],
+          ),
         ),
         Container(
           child: Row(
@@ -140,10 +191,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 ),
                 onPressed: (){
                   if(isPlaying){
-                    playerLogic.pauseMusic();
+                    _playerLogic.pauseMusic();
                   }
                   else{
-                    playerLogic.playMusic(widget.uri);
+                    _playerLogic.playMusic(widget.uri);
                   }
                 },
               ),

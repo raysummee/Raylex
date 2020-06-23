@@ -8,7 +8,7 @@ class PlayerAlbumArtCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 25, 0, 10),
+      margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
         boxShadow: [
@@ -24,9 +24,12 @@ class PlayerAlbumArtCard extends StatelessWidget {
       height: MediaQuery.of(context).size.width-80,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(40),
-        child: Image(
-          image: albumArt!=null?FileImage(File(albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
-          fit: BoxFit.cover,
+        child: Container(
+          color: Colors.white,
+          child: Image(
+            image: albumArt!=null?FileImage(File(albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
       )
     );

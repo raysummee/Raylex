@@ -1,15 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-class PlayerState with ChangeNotifier{
+class PlayerStateNotify with ChangeNotifier{
 
-  bool _isPlaying = false;
-
-  bool get isPlaying => _isPlaying;
-
-  set isPlaying(bool isPlaying){
-    _isPlaying = isPlaying;
-    notifyListeners();
-  }
 
   int _playlistPosition;
 
@@ -26,6 +18,15 @@ class PlayerState with ChangeNotifier{
 
   set audioDuration(Duration audioDuration){
     _audioDuration = audioDuration;
+    notifyListeners();
+  }
+
+  bool _playerVisible;
+
+  bool get playerVisible => _playerVisible;
+
+  set playerVisible(bool visibility){
+    _playerVisible = visibility;
     notifyListeners();
   }
 
