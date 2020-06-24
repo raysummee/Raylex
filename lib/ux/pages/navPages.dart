@@ -1,4 +1,7 @@
+import 'package:Raylex/ux/pages/historyPage.dart';
 import 'package:Raylex/ux/pages/libraryPages.dart';
+import 'package:Raylex/ux/pages/likedPage.dart';
+import 'package:Raylex/ux/pages/searchPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +24,10 @@ class _NavPagesState extends State<NavPages> {
         index: _currentIndex,
         //the body of the nav should be here index wise
         children: <Widget>[
-          LibraryPages()
+          LibraryPages(),
+          LikedPage(),
+          HistoryPage(),
+          SearchPage()
         ],
       ),
       //nav bar
@@ -68,10 +74,10 @@ class _NavPagesState extends State<NavPages> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.history,
+                  Icons.explore,
                 ),
                 title: Text(
-                  "History",
+                  "Explore",
                 )
               ),
               BottomNavigationBarItem(
