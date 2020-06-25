@@ -18,7 +18,7 @@ class _NavPagesState extends State<NavPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
+      extendBody: false,
       //body of the nav bar 
       body: IndexedStack(
         index: _currentIndex,

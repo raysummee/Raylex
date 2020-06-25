@@ -136,6 +136,14 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
         }
     }
 
+    public int getSessionIdMusic(){
+        if(exoPlayer!=null){
+            return exoPlayer.getAudioSessionId();
+        }else{
+            return 101;
+        }
+    }
+
 
     private final Runnable sendData = new Runnable(){
         public void run(){
@@ -174,6 +182,9 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
                 break;
             case "playPausedMusic":
                 playPausedMusic();
+                break;
+            case "getSessionMusicId":
+                result.success(getSessionIdMusic());
                 break;
             default:
                 result.notImplemented();

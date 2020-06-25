@@ -87,83 +87,56 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
           height: 200,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                margin: EdgeInsets.only(bottom: 2),
                 child: Text(
                   "Library",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 25,
+                    fontSize: 27,
                     fontWeight: FontWeight.bold
                   )
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Row(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
-                        
-                      ]
+                  IconButton(
+                    icon: Icon(
+                      Icons.fast_rewind,
+                      color: Colors.white,
                     ),
-                    width: 140,
-                    height: 110,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        color: Colors.white,
-                        child: Image(
-                          image: AssetImage("lib/assets/images/white-headphone.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
+                    onPressed: (){}
                   ),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.fast_rewind,
-                          color: Colors.white,
-                        ),
-                        onPressed: (){}
-                      ),
-                      IconButton(
-                        iconSize: 35,
-                        icon: AnimatedIcon(
-                          icon: AnimatedIcons.play_pause,
-                          progress: __animationController,
-                          color: Colors.white,
-                        ),
-                        onPressed: (){
-                          if(isPlaying){
-                            setState(() {
-                              isPlaying = false;
-                            });
-                            _playerLogic.pauseMusic();
-                            //__animationController.reverse();
-                          }
-                          else{
-                            setState(() {
-                              isPlaying = true;
-                            });
-                            _playerLogic.playPausedMusic();
-                            //__animationController.forward();
-                          }
-                        }
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.fast_forward,color: Colors.white,
-                        ),
-                        onPressed: (){}
-                      ),
-                    ],
+                  IconButton(
+                    iconSize: 35,
+                    icon: AnimatedIcon(
+                      icon: AnimatedIcons.play_pause,
+                      progress: __animationController,
+                      color: Colors.white,
+                    ),
+                    onPressed: (){
+                      if(isPlaying){
+                        setState(() {
+                          isPlaying = false;
+                        });
+                        _playerLogic.pauseMusic();
+                        //__animationController.reverse();
+                      }
+                      else{
+                        setState(() {
+                          isPlaying = true;
+                        });
+                        _playerLogic.playPausedMusic();
+                        //__animationController.forward();
+                      }
+                    }
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.fast_forward,color: Colors.white,
+                    ),
+                    onPressed: (){}
                   ),
                 ],
               )

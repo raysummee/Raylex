@@ -50,6 +50,10 @@ class PlayerLogic{
     await _platform.invokeMethod("playPausedMusic");
   }
 
+  Future<int> getAudioSessionID() async{
+    return await _platform.invokeMethod("getSessionMusicId");
+  }
+
   void seekToMusic(double seek) async{
     await _platform.invokeMethod("seekTo",<String, Object>{
       "seek": seek,

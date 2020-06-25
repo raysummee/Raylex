@@ -22,8 +22,10 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
       child: ListView.builder(
         itemCount: widget.songinfo.length,
         scrollDirection: Axis.vertical,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         itemBuilder: (context, index){
           return ListTile(
+            
             title: Text(
               widget.songinfo.elementAt(index).title,
               style: ((){

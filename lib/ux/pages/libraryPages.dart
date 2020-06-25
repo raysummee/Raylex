@@ -11,9 +11,6 @@ class LibraryPages extends StatefulWidget {
 }
 
 class _LibraryPagesState extends State<LibraryPages> {
-  final List<String> list = ["Zubeen Garg", "Sonu Nigam", "Justin Beiber", "ED Sheeran", "Ariana Grand"];
-
-  final List<String> listAlbums = ["Misson China", "Dil Jaale", "Sorry", "Safaar", "Promises"];
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class _LibraryPagesState extends State<LibraryPages> {
           builder: (context, snap){
             if(snap.data!=null){
               List<SongInfo> list = snap.data;
-              return  list.isNotEmpty?VerticalListSimple(list):Center(child: Text("No songs found"),);
+              return  list.isNotEmpty?VerticalListSimple(list):Expanded(child: Center(child: Text("No songs found"),));
             }else{
               return Expanded(
                 child: Column(

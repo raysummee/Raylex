@@ -53,7 +53,7 @@ public class MusicFinder {
         int idColumn = cur.getColumnIndex(MediaStore.Audio.Media._ID);
         int trackIdColumn = cur.getColumnIndex(MediaStore.Audio.Media.TRACK);
 
-        String musicDirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+        //String musicDirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
         do {
             String trackIdStr = cur.getString(trackIdColumn);
             int trackId = 0;
@@ -70,10 +70,11 @@ public class MusicFinder {
                     mAudioPath.get(cur.getLong(idColumn)),
                     mAlbumMap.get(cur.getLong(albumArtColumn)),
                     trackId);
-            if (song.uri.startsWith(musicDirPath)) {
+            //if (song.uri.startsWith(musicDirPath)) {
                 mSongs.add(song);
-            }
+            //}
         } while (cur.moveToNext());
+        cur.close();
 
     }
 
@@ -84,6 +85,7 @@ public class MusicFinder {
                 null,
                 null);
 
+        assert cursor != null;
         if (cursor.moveToFirst()) {
             do {
                 long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Albums._ID));
@@ -101,6 +103,7 @@ public class MusicFinder {
                 null,
                 null);
 
+        assert cursor != null;
         if (cursor.moveToFirst()) {
             do {
                 long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
@@ -195,6 +198,7 @@ public class MusicFinder {
 
             Cursor mediaCursor = getContentResolver().query(mediaContentUri, projection, selection, selectionArgs, null);
 
+            assert mediaCursor != null;
             if(mediaCursor.getCount() >= 0) {
                 mediaCursor.moveToPosition(0);
 //                String title = mediaCursor.getString(mediaCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
@@ -224,6 +228,7 @@ public class MusicFinder {
                     new String[] {String.valueOf(albumId)},
                     null);
 
+            assert cursor != null;
             if (cursor.moveToFirst()) {
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
                 // do whatever you need to do
