@@ -25,7 +25,6 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         itemBuilder: (context, index){
           return ListTile(
-            
             title: Text(
               widget.songinfo.elementAt(index).title,
               style: ((){

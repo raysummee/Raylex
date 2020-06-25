@@ -3,7 +3,6 @@ import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:provider/provider.dart';
 
 class GroupPlayerControl extends StatefulWidget {
   final String uri;

@@ -46,16 +46,20 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
 
     public void initExoPlayer(String uri) {
         lastUri = uri;
-        if(exoPlayer!=null){
-            exoPlayer.release();
-        }
+
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(
                 context,
                 null,
                 DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF
         );
         TrackSelector trackSelector = new DefaultTrackSelector();
+        if(exoPlayer!=null){
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
         exoPlayer = ExoPlayerFactory.newSimpleInstance(
+                context,
                 renderersFactory,
                 trackSelector
         );
