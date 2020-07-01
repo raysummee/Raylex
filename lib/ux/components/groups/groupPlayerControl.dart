@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class GroupPlayerControl extends StatefulWidget {
-  final String uri;
-  final Duration totalDuration;
-  GroupPlayerControl(this.uri, this.totalDuration);
+  final List<SongInfo> songinfos;
+  final int index;
+  GroupPlayerControl(this.songinfos, this.index);
   @override
   _GroupPlayerControlState createState() => _GroupPlayerControlState();
 }
@@ -18,6 +19,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   AnimationController _animationController;
   bool isPlaying = false;
   PlayerLogic _playerLogic;
+  int index;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
@@ -77,14 +79,17 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     super.initState();
     print("player init");
     _playerLogic = PlayerLogic();
+    _playerLogic.setMethodCallHandler();
     _playerLogic.getInitDuration();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
     if(!isPlaying){
-      _playerLogic.playMusic(widget.uri);
+      _playerLogic.playMusic(widget.songinfos.elementAt(widget.index).uri);
     }
+    index = widget.index;
+    _playerLogic.setPlaylistPostion(index);
   }
 
   @override
@@ -178,7 +183,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   FlutterIcons.rewind_fea,
                   color: Colors.grey.shade600,
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  _playerLogic.prevSong(widget.songinfos);
+                  --index;
+                },
               ),
               IconButton(
                 iconSize: 70,
@@ -193,7 +201,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                     _playerLogic.pauseMusic();
                   }
                   else{
-                    _playerLogic.playMusic(widget.uri);
+                    _playerLogic.playMusic(widget.songinfos.elementAt(index).uri);
                   }
                 },
               ),
@@ -204,7 +212,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   FlutterIcons.fast_forward_fea,
                   color: Colors.grey.shade600,
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  _playerLogic.nextSong(widget.songinfos);
+                  ++index;
+                }
               )
             ],
           )

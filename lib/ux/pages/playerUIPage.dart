@@ -8,8 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayerUIPage extends StatelessWidget{
-  final SongInfo songInfo;
-  PlayerUIPage(this.songInfo);
+  final List<SongInfo> songInfos;
+  final index;
+  PlayerUIPage(this.songInfos, this.index);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +27,11 @@ class PlayerUIPage extends StatelessWidget{
               //the top portion playlist name, back, menu consist here
               PlayerAppBar(),
               //the album art is consist here
-              PlayerAlbumArtCard(songInfo.albumArt),
+              PlayerAlbumArtCard(songInfos, index),
               //song name and artist name here
-              GroupPlayerTextMeta(songInfo.title, songInfo.artist),
+              GroupPlayerTextMeta(songInfos, index),
               //basics controls like seek, play pause, next, previous
-              GroupPlayerControl(songInfo.uri, Duration(seconds: songInfo.duration)),
+              GroupPlayerControl(songInfos, index),
               //acco controls like mute speaker of headset set shuffle and repeats
               GroupPlayerAccControl(),
             ],

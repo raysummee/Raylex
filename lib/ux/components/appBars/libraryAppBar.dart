@@ -24,7 +24,7 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
       __subscriptionPlayerStateChanged = null;
     }else{
       isActive = true;
-      _playerLogic = PlayerLogic();
+      _playerLogic.setMethodCallHandler();
       print("creating onstateSecondary");
     __subscriptionPlayerStateChanged = _playerLogic.onPlayerSecondaryStateChanged.handleError((e)=>print("streamerror $e")).listen((state) {
       print("onStateChangedSecondary");

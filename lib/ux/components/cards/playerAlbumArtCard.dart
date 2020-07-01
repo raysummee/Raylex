@@ -1,10 +1,47 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:Raylex/logic/models/songInfo.dart';
+import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 
-class PlayerAlbumArtCard extends StatelessWidget {
-  final String albumArt;
-  PlayerAlbumArtCard(this.albumArt);
+class PlayerAlbumArtCard extends StatefulWidget {
+  final List<SongInfo> songinfos;
+  final int index;
+  PlayerAlbumArtCard(this.songinfos, this.index);
+
+  @override
+  _PlayerAlbumArtCardState createState() => _PlayerAlbumArtCardState();
+}
+
+class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
+  PlayerLogic _playerLogic;
+  StreamSubscription _playlistPositionSubscription;
+  int index;
+
+  @override
+  void initState(){
+    super.initState();
+    _playerLogic = PlayerLogic();
+    index = widget.index;
+  }
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    _playlistPositionSubscription = _playerLogic.onPlaylistPositionChanged.listen((pos) { 
+      setState(() {
+        index = pos;
+      });
+    });
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _playlistPositionSubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +64,7 @@ class PlayerAlbumArtCard extends StatelessWidget {
         child: Container(
           color: Colors.white,
           child: Image(
-            image: albumArt!=null?FileImage(File(albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
+            image: widget.songinfos.elementAt(index).albumArt!=null?FileImage(File(widget.songinfos.elementAt(index).albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
             fit: BoxFit.cover,
           ),
         ),

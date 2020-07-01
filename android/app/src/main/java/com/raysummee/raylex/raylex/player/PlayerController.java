@@ -29,10 +29,12 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
     Context context;
     MethodChannel channel;
     String lastUri;
+    int playlistPos;
     static PlayerController instance;
     public PlayerController(Context context, MethodChannel channel){
         this.context = context;
         this.channel = channel;
+        this.playlistPos = 0;
     }
 
     public static void registerWith(PluginRegistry.Registrar registrar){
@@ -148,6 +150,17 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
         }
     }
 
+    public int getPlaylistPosition(){
+        return playlistPos;
+    }
+
+    public int setPlaylistPosition(Integer pos){
+        Log.e("testing", "startandr");
+        playlistPos = pos;
+        Log.e("testing", "endandr");
+        return pos;
+    }
+
 
     private final Runnable sendData = new Runnable(){
         public void run(){
@@ -189,6 +202,12 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
                 break;
             case "getSessionMusicId":
                 result.success(getSessionIdMusic());
+                break;
+            case "getPlaylistPosition":
+                result.success(getPlaylistPosition());
+                break;
+            case "setPlaylistPosition":
+                result.success(setPlaylistPosition(call.argument("pos")));
                 break;
             default:
                 result.notImplemented();

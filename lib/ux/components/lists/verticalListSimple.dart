@@ -51,7 +51,7 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
             onTap: (){
               Navigator.push(
                 context, 
-                MaterialPageRoute(builder: (context) => PlayerUIPage(widget.songinfo.elementAt(index)))
+                MaterialPageRoute(builder: (context) => PlayerUIPage(widget.songinfo, index))
               );
               setState(() {
                 currentPlaying = index;

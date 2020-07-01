@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:flutter/services.dart';
 
 //channel id for the audio operation
@@ -19,14 +20,19 @@ class PlayerLogic{
   final StreamController<bool> _playerStateSecondaryController = StreamController.broadcast();
   final StreamController<Duration> _playerPositionController = StreamController.broadcast();
   final StreamController<Duration> _songDurationController = StreamController.broadcast();
+  final StreamController<int> _playlistPositionController = StreamController.broadcast();
 
   PlayerState _playerState = PlayerState.STOPPED;
   Duration _duration = const Duration();
+  int _playlistPosition = 0;
 
   PlayerLogic(){
-    _platform.setMethodCallHandler(_audioPlayerStateChange);
     
     print("constructor");
+  }
+
+  void setMethodCallHandler(){
+    _platform.setMethodCallHandler(_audioPlayerStateChange);
   }
 
   void getInitDuration() async{
@@ -60,6 +66,20 @@ class PlayerLogic{
     });
   }
 
+  void nextSong(List<SongInfo> songinfos) async{
+    int pos = await getPlaylistPosition();
+    print("current playlist $pos");
+    setPlaylistPostion(pos + 1);
+    print("setting new playlist pos ");
+    playMusic(songinfos.elementAt(await getPlaylistPosition()).uri);
+    print("nextsong ${await getPlaylistPosition()}");
+  }
+
+  void prevSong(List<SongInfo> songinfos) async{
+    setPlaylistPostion((await getPlaylistPosition()) - 1);
+    playMusic(songinfos.elementAt(await getPlaylistPosition()).uri);
+  }
+
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
 
   PlayerState get state => _playerState;
@@ -73,9 +93,34 @@ class PlayerLogic{
 
   Stream<Duration> get onAudioPositionChanged => _playerPositionController.stream;
 
+  int get playlistPosition => _playlistPosition;
+
+  Stream<int> get onPlaylistPositionChanged => _playlistPositionController.stream;
+
   Future<bool> onInstanceIsPlaying() async{
     return await _platform.invokeMethod("onInstanceIsPlaying");
   }
+
+  Future<int> getPlaylistPosition() async{
+    _playlistPosition = await _platform.invokeMethod("getPlaylistPosition");
+    _playlistPositionController.add(_playlistPosition);
+   // print("getplaylistposition $_playlistPosition");
+    return _playlistPosition;
+  }
+
+  void setPlaylistPostion(int pos) async{
+    _playlistPosition = pos;
+    print("initital set");
+    _playlistPositionController.add(pos);
+    print("stream set");
+    await _platform.invokeMethod("setPlaylistPosition", <String, Object>{
+      "pos": pos,
+    });
+    print("adroid setted");
+  }
+
+
+
 
   Future<void> _audioPlayerStateChange(MethodCall call) async{
     switch(call.method){
