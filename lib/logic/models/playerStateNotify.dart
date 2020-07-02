@@ -14,14 +14,6 @@ class PlayerStateNotify with ChangeNotifier{
     notifyListeners();
   }
 
-  int _index;
-
-  int get index=>_index;
-
-  set index(int pos){
-    _index = pos;
-    notifyListeners();
-  }
 
 
 }

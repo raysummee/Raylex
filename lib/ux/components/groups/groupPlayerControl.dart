@@ -24,7 +24,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   bool isPlaying = false;
   int index;
   //PlayerStateNotify appstate;
-  //PlaylistPosition appstatepos;
+  PlaylistPosition appstate;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
@@ -34,8 +34,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     super.didChangeDependencies();
     print("player didchangeddependencies");
     print("initial $_audioDuration");
-    //appstate = Provider.of<PlayerStateNotify>(context);
-    //appstate.index = index;
+    appstate = Provider.of<PlaylistPosition>(context);
+    appstate.index = index;
     _subscriptionAudioPositionChanged = widget._playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
@@ -198,7 +198,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 onPressed: (){
                   widget._playerLogic.prevSong(widget.songinfos);
                   --index;
-                  //appstate.index = index;
+                  appstate.index = index;
                 },
               ),
               IconButton(
@@ -215,7 +215,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   }
                   else{
                     widget._playerLogic.playMusic(widget.songinfos.elementAt(index).uri);
-                    //appstate.index = index;
+                    appstate.index = index;
                   }
                 },
               ),
@@ -229,7 +229,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 onPressed: (){
                   widget._playerLogic.nextSong(widget.songinfos);
                   ++index;
-                  //appstate.index = index;
+                  appstate.index = index;
                 }
               )
             ],

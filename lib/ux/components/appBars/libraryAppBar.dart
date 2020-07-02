@@ -18,12 +18,14 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
   bool isPlaying=false;
   bool isActive=true;
   PlayerStateNotify appstate;
-  PlaylistPosition appstatepos;
+  //PlaylistPosition appstatepos;
   
   @override 
   void didChangeDependencies(){
     super.didChangeDependencies();
-    //appstate=Provider.of<PlayerStateNotify>(context);
+    if(appstate==null)
+    appstate=Provider.of<PlayerStateNotify>(context);
+    //if(appstatepos==null)
     //appstatepos = Provider.of<PlaylistPosition>(context);
     //_playerLogic.getPlaylistPosition().then((value) => appstatepos.index = value);
     print("didchangeddependencies library");
@@ -139,7 +141,7 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
                           isPlaying = false;
                         });
                         _playerLogic.pauseMusic();
-                        //__animationController.reverse();
+                        __animationController.reverse();
                       }
                       else{
                         setState(() {

@@ -26,6 +26,7 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
+    if(appstate==null)
     appstate = Provider.of<PlaylistPosition>(context);
   }
   @override
