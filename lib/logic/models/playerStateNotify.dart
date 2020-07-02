@@ -1,32 +1,25 @@
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:flutter/foundation.dart';
 
 class PlayerStateNotify with ChangeNotifier{
 
 
-  int _playlistPosition;
 
-  int get playlistPosition => _playlistPosition;
+  List<SongInfo> _songinfos;
 
-  set playlistPosition(playlistPosition){
-    _playlistPosition = playlistPosition;
+  List<SongInfo> get songinfos => _songinfos;
+
+  set songInfos(List<SongInfo> songinfolist){
+    _songinfos = songinfolist;
     notifyListeners();
   }
 
-  Duration _audioDuration;
+  int _index;
 
-  Duration get audioDuration => _audioDuration;
+  int get index=>_index;
 
-  set audioDuration(Duration audioDuration){
-    _audioDuration = audioDuration;
-    notifyListeners();
-  }
-
-  bool _playerVisible;
-
-  bool get playerVisible => _playerVisible;
-
-  set playerVisible(bool visibility){
-    _playerVisible = visibility;
+  set index(int pos){
+    _index = pos;
     notifyListeners();
   }
 

@@ -1,6 +1,12 @@
+import 'dart:async';
+
+import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
+import 'package:Raylex/logic/playerLogic.dart';
 import 'package:Raylex/ux/pages/playerUIPage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VerticalListSimple extends StatefulWidget {
   final List<SongInfo> songinfo;
@@ -12,9 +18,19 @@ class VerticalListSimple extends StatefulWidget {
 
 class _VerticalListSimpleState extends State<VerticalListSimple> {
   int currentPlaying;
+  PlaylistPosition appstate;
   @override 
   void initState(){
     super.initState();
+  }
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    appstate = Provider.of<PlaylistPosition>(context);
+  }
+  @override
+  void dispose(){
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -28,7 +44,7 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
             title: Text(
               widget.songinfo.elementAt(index).title,
               style: ((){
-                if(currentPlaying!=null && currentPlaying == index){
+                if(appstate.index!=null && appstate.index == index){
                   return TextStyle(
                     color: Colors.pink.shade300,
                     fontWeight: FontWeight.bold
@@ -39,7 +55,7 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
               }()),
             ),
             trailing: ((){
-              if(currentPlaying!=null && currentPlaying == index)
+              if(appstate.index!=null && appstate.index == index)
                 return Icon(
                       Icons.bubble_chart,
                       color: Colors.pink.shade300,

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 
 class GroupPlayerControl extends StatefulWidget {
   final List<SongInfo> songinfos;
@@ -21,6 +23,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   AnimationController _animationController;
   bool isPlaying = false;
   int index;
+  //PlayerStateNotify appstate;
+  //PlaylistPosition appstatepos;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
@@ -30,6 +34,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     super.didChangeDependencies();
     print("player didchangeddependencies");
     print("initial $_audioDuration");
+    //appstate = Provider.of<PlayerStateNotify>(context);
+    //appstate.index = index;
     _subscriptionAudioPositionChanged = widget._playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
@@ -192,6 +198,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 onPressed: (){
                   widget._playerLogic.prevSong(widget.songinfos);
                   --index;
+                  //appstate.index = index;
                 },
               ),
               IconButton(
@@ -208,6 +215,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   }
                   else{
                     widget._playerLogic.playMusic(widget.songinfos.elementAt(index).uri);
+                    //appstate.index = index;
                   }
                 },
               ),
@@ -221,6 +229,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                 onPressed: (){
                   widget._playerLogic.nextSong(widget.songinfos);
                   ++index;
+                  //appstate.index = index;
                 }
               )
             ],

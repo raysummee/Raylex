@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/playlistPosition.dart';
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LibraryAppBar extends StatefulWidget {
   @override
@@ -13,10 +17,15 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
   PlayerLogic _playerLogic;
   bool isPlaying=false;
   bool isActive=true;
+  PlayerStateNotify appstate;
+  PlaylistPosition appstatepos;
   
   @override 
   void didChangeDependencies(){
     super.didChangeDependencies();
+    //appstate=Provider.of<PlayerStateNotify>(context);
+    //appstatepos = Provider.of<PlaylistPosition>(context);
+    //_playerLogic.getPlaylistPosition().then((value) => appstatepos.index = value);
     print("didchangeddependencies library");
     if(__subscriptionPlayerStateChanged!=null){
       print("canceled onstatechangedSecondary");
@@ -75,10 +84,12 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
     print("library dispose");
     __animationController.dispose();
     __subscriptionPlayerStateChanged.cancel();
+    //appstate.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.lightBlue,
       flexibleSpace: SafeArea(
         bottom: false,
         child: Container(
@@ -106,7 +117,14 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
                       Icons.fast_rewind,
                       color: Colors.white,
                     ),
-                    onPressed: (){}
+                    onPressed: (){
+                      if(appstate.songinfos!=null && appstate.songinfos.isNotEmpty){
+                        _playerLogic.prevSong(appstate.songinfos);
+                        //appstatepos.index=appstatepos.index-1;
+                      }
+                      else
+                        print("error prev");
+                    }
                   ),
                   IconButton(
                     iconSize: 35,
@@ -136,7 +154,14 @@ class _LibraryAppBarState extends State<LibraryAppBar> with TickerProviderStateM
                     icon: Icon(
                       Icons.fast_forward,color: Colors.white,
                     ),
-                    onPressed: (){}
+                    onPressed: (){
+                      if(appstate.songinfos!=null && appstate.songinfos.isNotEmpty){
+                        _playerLogic.nextSong(appstate.songinfos);
+                        //appstatepos.index = appstatepos.index + 1;
+                      }
+                      else
+                        print("error next");
+                    }
                   ),
                 ],
               )
