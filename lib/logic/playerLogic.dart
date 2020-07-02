@@ -24,6 +24,7 @@ class PlayerLogic{
 
   PlayerState _playerState = PlayerState.STOPPED;
   Duration _duration = const Duration();
+  Duration _audioPosition = const Duration();
   int _playlistPosition = 0;
 
   PlayerLogic(){
@@ -91,6 +92,8 @@ class PlayerLogic{
 
   Duration get duration => _duration;
 
+  Duration get audioPosition => _audioPosition;
+
   Stream<Duration> get onAudioPositionChanged => _playerPositionController.stream;
 
   int get playlistPosition => _playlistPosition;
@@ -127,6 +130,7 @@ class PlayerLogic{
       case "audio.onCurrentPosition":
         //assert(_playerState == PlayerState.PLAYING);
         _playerPositionController.add(Duration(milliseconds: call.arguments));
+        _audioPosition = Duration(milliseconds: call.arguments);
         break;
       case "audio.onStart":
         _playerState = PlayerState.PLAYING;
@@ -145,6 +149,8 @@ class PlayerLogic{
         _playerState = PlayerState.STOPPED;
         _playerStateController.add(PlayerState.STOPPED);
         _playerStateSecondaryController.add(false);
+        //if(audioPosition == duration)
+        //  nextSong(songinfos);
         break;
       case "audio.onBuffer":
         _playerState = PlayerState.BUFFERING;

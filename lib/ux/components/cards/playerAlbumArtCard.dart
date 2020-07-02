@@ -8,28 +8,28 @@ import 'package:flutter/material.dart';
 class PlayerAlbumArtCard extends StatefulWidget {
   final List<SongInfo> songinfos;
   final int index;
-  PlayerAlbumArtCard(this.songinfos, this.index);
+  final PlayerLogic _playerLogic;
+  PlayerAlbumArtCard(this.songinfos, this.index, this._playerLogic);
 
   @override
   _PlayerAlbumArtCardState createState() => _PlayerAlbumArtCardState();
 }
 
 class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
-  PlayerLogic _playerLogic;
+  
   StreamSubscription _playlistPositionSubscription;
   int index;
 
   @override
   void initState(){
     super.initState();
-    _playerLogic = PlayerLogic();
     index = widget.index;
   }
 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
-    _playlistPositionSubscription = _playerLogic.onPlaylistPositionChanged.listen((pos) { 
+    _playlistPositionSubscription = widget._playerLogic.onPlaylistPositionChanged.listen((pos) { 
       setState(() {
         index = pos;
       });

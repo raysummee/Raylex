@@ -8,28 +8,27 @@ import 'package:flutter/material.dart';
 class GroupPlayerTextMeta extends StatefulWidget {
   final List<SongInfo> songinfos;
   final int index;
-  GroupPlayerTextMeta(this.songinfos, this.index);
+  final PlayerLogic _playerLogic;
+  GroupPlayerTextMeta(this.songinfos, this.index, this._playerLogic);
 
   @override
   _GroupPlayerTextMetaState createState() => _GroupPlayerTextMetaState();
 }
 
 class _GroupPlayerTextMetaState extends State<GroupPlayerTextMeta> {
-  PlayerLogic _playerLogic;
   StreamSubscription _playlistPositionSubscription;
   int index;
 
   @override
   void initState(){
     super.initState();
-    _playerLogic = PlayerLogic();
     index = widget.index;
   }
 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
-    _playlistPositionSubscription = _playerLogic.onPlaylistPositionChanged.listen((pos) {
+    _playlistPositionSubscription = widget._playerLogic.onPlaylistPositionChanged.listen((pos) {
       print("playertext playlist pos changed");
       setState(() {
         index  = pos;
