@@ -9,7 +9,7 @@ class PlayerStateNotify with ChangeNotifier{
 
   List<SongInfo> get songinfos => _songinfos;
 
-  set songInfos(List<SongInfo> songinfolist){
+  set songinfos(List<SongInfo> songinfolist){
     _songinfos = songinfolist;
     notifyListeners();
   }

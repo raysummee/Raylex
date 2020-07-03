@@ -8,30 +8,8 @@ import 'package:Raylex/ux/components/animations/marqueeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GroupPlayerTextMeta extends StatefulWidget {
 
-  @override
-  _GroupPlayerTextMetaState createState() => _GroupPlayerTextMetaState();
-}
-
-class _GroupPlayerTextMetaState extends State<GroupPlayerTextMeta> {
-
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-  }
+class GroupPlayerTextMeta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

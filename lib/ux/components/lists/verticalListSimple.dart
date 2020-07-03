@@ -17,24 +17,11 @@ class VerticalListSimple extends StatefulWidget {
 }
 
 class _VerticalListSimpleState extends State<VerticalListSimple> {
-  int currentPlaying;
-  PlaylistPosition appstate;
-  @override 
-  void initState(){
-    super.initState();
-  }
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    if(appstate==null)
-    appstate = Provider.of<PlaylistPosition>(context);
-  }
-  @override
-  void dispose(){
-    super.dispose();
-  }
+  
   @override
   Widget build(BuildContext context) {
+    var appstate = Provider.of<PlaylistPosition>(context);
+    
     return Expanded(
       child: ListView.builder(
         itemCount: widget.songinfo.length,
@@ -60,7 +47,6 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
                 return Icon(
                       Icons.bubble_chart,
                       color: Colors.pink.shade300,
-                    
                 );
               else
                 return Text("");
@@ -68,9 +54,6 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
             onTap: (){
               PlayerLogic().playMusic(widget.songinfo.elementAt(index).uri);
               appstate.index = index;
-              setState(() {
-                currentPlaying = index;
-              });
             }
           );
         },

@@ -19,8 +19,6 @@ class MiniPlayer extends StatefulWidget {
 
 class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  PlayerStateNotify appstate;
-  PlaylistPosition appstatepos;
   StreamSubscription _streamSubscriptionState;
   bool isPlaying;
   PlayerLogic _playerLogic;
@@ -38,39 +36,43 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
-    if(appstate==null)
-    appstate = Provider.of<PlayerStateNotify>(context);
-    if(appstatepos==null)
-    appstatepos = Provider.of<PlaylistPosition>(context);
     _playerLogic.setMethodCallHandler();
     _streamSubscriptionState = _playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
       
       if(state == PlayerState.PLAYING){
-        setState(() {
-          isPlaying = true;
-        });
-        _controller.forward();
+        if(mounted){
+          setState(() {
+            isPlaying = true;
+          });
+          _controller.forward();
+        }
       }
       if(state == PlayerState.PAUSED){
-        setState(() {
-          isPlaying = false;
-        });
-        _controller.reverse();
+        if(mounted){
+          setState(() {
+            isPlaying = false;
+          });
+          _controller.reverse();
+        }
       }
       if(state == PlayerState.STOPPED){
-        setState(() {
-          isPlaying = false;
-        });   
-        _controller.reverse();
+        if(mounted){
+          setState(() {
+            isPlaying = false;
+          });   
+          _controller.reverse();
+        }
       }
     });
     _playerLogic.onInstanceIsPlaying().then((isP) {
-      setState(() {
-        isPlaying = isP;
-      });
-      if(isP){
-        _controller.forward(from: _controller.upperBound);
+      if(mounted){
+        setState(() {
+          isPlaying = isP;
+        });
+        if(isP){
+          _controller.forward(from: _controller.upperBound);
+        }
       }
     });
   }
@@ -94,6 +96,8 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    var appstate = Provider.of<PlayerStateNotify>(context);
+    var appstatepos = Provider.of<PlaylistPosition>(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(2,0,2,1),
         child: ClipRRect(
@@ -148,7 +152,10 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
                                   icon: AnimatedIcons.play_pause,
                                   progress: _controller,
                                 ),
-                                onPressed: ()=>onPlayClick()
+                                onPressed: (){
+                                  if(appstate.songinfos!=null&&appstatepos.index!=null)
+                                    onPlayClick();
+                                }
                               ),
                           ),
                         ),
@@ -162,8 +169,10 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
                               color: Colors.white,
                               icon: Icon(FlutterIcons.fast_forward_mdi),
                               onPressed: (){
-                                _playerLogic.nextSong(appstate.songinfos, appstatepos.index);
-                                ++appstatepos.index;
+                                if(appstate.songinfos!=null&&appstatepos!=null){
+                                  _playerLogic.nextSong(appstate.songinfos, appstatepos.index);
+                                  ++appstatepos.index;
+                                }
                               }
                             ),
                           ),

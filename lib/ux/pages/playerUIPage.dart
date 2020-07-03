@@ -16,37 +16,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
-class PlayerUIPage extends StatefulWidget{
+
+class PlayerUIPage extends StatelessWidget{
   final PlayerLogic _playerLogic;
   PlayerUIPage(this._playerLogic);
-  @override
-  _PlayerUIPageState createState() => _PlayerUIPageState();
-}
-
-class _PlayerUIPageState extends State<PlayerUIPage> {
-  PlayerStateNotify appstate;
-  PlaylistPosition appstatepos;
-  //bool miniplayer=true;
-
-  
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    appstate = Provider.of<PlayerStateNotify>(context);
-    appstatepos = Provider.of<PlaylistPosition>(context);
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +37,7 @@ class _PlayerUIPageState extends State<PlayerUIPage> {
                     //song name and artist name here
                     GroupPlayerTextMeta(),
                     //basics controls like seek, play pause, next, previous
-                    GroupPlayerControl(widget._playerLogic),
+                    GroupPlayerControl(_playerLogic),
                     //acco controls like mute speaker of headset set shuffle and repeats
                     GroupPlayerAccControl(),
                   ],

@@ -8,31 +8,8 @@ import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PlayerAlbumArtCard extends StatefulWidget {
-  @override
-  _PlayerAlbumArtCardState createState() => _PlayerAlbumArtCardState();
-}
 
-class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
-  
-  StreamSubscription _playlistPositionSubscription;
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-    _playlistPositionSubscription.cancel();
-  }
+class PlayerAlbumArtCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

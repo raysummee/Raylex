@@ -23,24 +23,26 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
-  PlaylistPosition appstatepos;
-  PlayerStateNotify appstatelist;
+  //PlaylistPosition appstatepos;
+  //PlayerStateNotify appstatelist;
   
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
     print("player didchangeddependencies");
     print("initial $_audioDuration");    
-    appstatepos = Provider.of<PlaylistPosition>(context);
-    appstatelist = Provider.of<PlayerStateNotify>(context);
+    final appstatepos = Provider.of<PlaylistPosition>(context, listen: false);
+    final appstatelist = Provider.of<PlayerStateNotify>(context, listen: false);
 
     _subscriptionAudioPositionChanged = widget._playerLogic.onAudioPositionChanged.listen((pos) {
+      if(mounted)
       setState(() {
         _playerSeekValue = pos;
       });
     });
     _subscriptionAudioDurationChanged = widget._playerLogic.onDurationChanged.listen((duration) {
       print(duration.inMilliseconds.toString());
+      if(mounted)
       setState(() {
         if(duration != Duration.zero)
         _audioDuration = duration;
@@ -49,36 +51,45 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     _subscriptionPlayerStateChanged = widget._playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
       if(state == PlayerState.PLAYING){
-        setState(() {
-          isPlaying = true;
-        });
-        _animationController.forward();
+        if(mounted){
+          setState(() {
+            isPlaying = true;
+          });
+          _animationController.forward();
+        }
       }
       if(state == PlayerState.PAUSED){
-        setState(() {
-          isPlaying = false;
-        });
-        _animationController.reverse();
+        if(mounted){
+          setState(() {
+            isPlaying = false;
+          });
+          _animationController.reverse();
+        }
       }
       if(state == PlayerState.STOPPED){
-        setState(() {
-          isPlaying = false;
-        });   
-        _animationController.reverse();
-        print("song stopped at ${_playerSeekValue.inSeconds} of ${_audioDuration.inSeconds}");
-        if(_playerSeekValue.inSeconds == _audioDuration.inSeconds){
-          print("song ended");
-          widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+        if(mounted){
+          setState(() {
+            isPlaying = false;
+          });   
+          _animationController.reverse();
+          print("song stopped at ${_playerSeekValue.inSeconds} of ${_audioDuration.inSeconds}");
+          if(_playerSeekValue.inSeconds == _audioDuration.inSeconds){
+            print("song ended");
+            widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+            ++appstatepos.index;
+          }
         }
       }
     });
     widget._playerLogic.onInstanceIsPlaying().then((isP) {
-      setState(() {
-        isPlaying = isP;
+      if(mounted){
+        setState(() {
+          isPlaying = isP;
+        });
         if(isP){
           _animationController.forward(from: _animationController.upperBound);
         }
-      });
+      }
     });
     
   }
@@ -115,6 +126,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
  
   @override
   Widget build(BuildContext context) {
+    var appstatelist = Provider.of<PlayerStateNotify>(context);
+    var appstatepos = Provider.of<PlaylistPosition>(context);
     return Column(
       children: <Widget>[
         Container(

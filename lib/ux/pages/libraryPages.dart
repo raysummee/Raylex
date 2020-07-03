@@ -13,15 +13,10 @@ class LibraryPages extends StatefulWidget {
 }
 
 class _LibraryPagesState extends State<LibraryPages> {
-  PlayerStateNotify appstate;
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    if(appstate==null)
-     appstate=Provider.of<PlayerStateNotify>(context);
-  }
+  
   @override
   Widget build(BuildContext context) {
+    var appstate = Provider.of<PlayerStateNotify>(context);
     return Column(
       children: <Widget>[
         LibraryAppBar(),
@@ -30,7 +25,7 @@ class _LibraryPagesState extends State<LibraryPages> {
           builder: (context, snap){
             if(snap.data!=null){
               List<SongInfo> list = snap.data;
-              appstate.songInfos = list;
+              appstate.songinfos = list;
               return  list.isNotEmpty?VerticalListSimple(list):Expanded(
                 child: Center(
                   child: Text("No songs found"),
