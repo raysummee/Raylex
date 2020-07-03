@@ -67,18 +67,22 @@ class PlayerLogic{
     });
   }
 
-  void nextSong(List<SongInfo> songinfos) async{
-    int pos = await getPlaylistPosition();
-    print("current playlist $pos");
-    setPlaylistPostion(pos + 1);
-    print("setting new playlist pos ");
-    playMusic(songinfos.elementAt(await getPlaylistPosition()).uri);
-    print("nextsong ${await getPlaylistPosition()}");
+  void nextSong(List<SongInfo> songinfos, int currentpos) async{
+    if(currentpos<songinfos.length){
+      playMusic(songinfos.elementAt(++currentpos).uri);
+      print("nextsong ${++currentpos}");
+    }else{
+      print("no more songs");
+    }
   }
 
-  void prevSong(List<SongInfo> songinfos) async{
-    setPlaylistPostion((await getPlaylistPosition()) - 1);
-    playMusic(songinfos.elementAt(await getPlaylistPosition()).uri);
+  void prevSong(List<SongInfo> songinfos, int currentpos) async{
+    if(currentpos>0){
+      playMusic(songinfos.elementAt(--currentpos).uri);
+      print("nextsong ${--currentpos}");
+    }else{
+      print("no more songs");
+    }
   }
 
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;

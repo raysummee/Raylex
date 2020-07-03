@@ -8,11 +8,9 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
 class GroupPlayerControl extends StatefulWidget {
-  final List<SongInfo> songinfos;
-  final int index;
   final PlayerLogic _playerLogic;
 
-  GroupPlayerControl(this.songinfos, this.index, this._playerLogic);
+  GroupPlayerControl(this._playerLogic);
   @override
   _GroupPlayerControlState createState() => _GroupPlayerControlState();
 }
@@ -22,35 +20,34 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
   Duration _audioDuration = Duration();
   AnimationController _animationController;
   bool isPlaying = false;
-  int index;
-  //PlayerStateNotify appstate;
-  PlaylistPosition appstate;
   StreamSubscription _subscriptionAudioPositionChanged;
   StreamSubscription _subscriptionPlayerStateChanged;
   StreamSubscription _subscriptionAudioDurationChanged;
+  PlaylistPosition appstatepos;
+  PlayerStateNotify appstatelist;
   
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
     print("player didchangeddependencies");
-    print("initial $_audioDuration");
-    appstate = Provider.of<PlaylistPosition>(context);
-    appstate.index = index;
+    print("initial $_audioDuration");    
+    appstatepos = Provider.of<PlaylistPosition>(context);
+    appstatelist = Provider.of<PlayerStateNotify>(context);
+
     _subscriptionAudioPositionChanged = widget._playerLogic.onAudioPositionChanged.listen((pos) {
       setState(() {
         _playerSeekValue = pos;
       });
     });
     _subscriptionAudioDurationChanged = widget._playerLogic.onDurationChanged.listen((duration) {
+      print(duration.inMilliseconds.toString());
       setState(() {
-        print(duration.inMilliseconds.toString());
         if(duration != Duration.zero)
         _audioDuration = duration;
       });
     });
     _subscriptionPlayerStateChanged = widget._playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
-      
       if(state == PlayerState.PLAYING){
         setState(() {
           isPlaying = true;
@@ -71,8 +68,7 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
         print("song stopped at ${_playerSeekValue.inSeconds} of ${_audioDuration.inSeconds}");
         if(_playerSeekValue.inSeconds == _audioDuration.inSeconds){
           print("song ended");
-          widget._playerLogic.nextSong(widget.songinfos);
-          ++index;
+          widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
         }
       }
     });
@@ -97,11 +93,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
-    if(!isPlaying){
-      widget._playerLogic.playMusic(widget.songinfos.elementAt(widget.index).uri);
-    }
-    index = widget.index;
-    widget._playerLogic.setPlaylistPostion(index);
+    
+    //widget._playerLogic.setPlaylistPostion(index);
   }
 
   @override
@@ -196,9 +189,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){
-                  widget._playerLogic.prevSong(widget.songinfos);
-                  --index;
-                  appstate.index = index;
+                  widget._playerLogic.prevSong(appstatelist.songinfos, appstatepos.index);
+                  --appstatepos.index;
                 },
               ),
               IconButton(
@@ -214,8 +206,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                     widget._playerLogic.pauseMusic();
                   }
                   else{
-                    widget._playerLogic.playMusic(widget.songinfos.elementAt(index).uri);
-                    appstate.index = index;
+                    widget._playerLogic.playMusic(appstatelist.songinfos.elementAt(appstatepos.index).uri);
+                    //appstate.index = index;
                   }
                 },
               ),
@@ -227,9 +219,8 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){
-                  widget._playerLogic.nextSong(widget.songinfos);
-                  ++index;
-                  appstate.index = index;
+                  widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+                  ++appstatepos.index;
                 }
               )
             ],

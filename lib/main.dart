@@ -1,3 +1,4 @@
+import 'package:Raylex/logic/models/modelMiniplayer.dart';
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/ux/pages/navPages.dart';
@@ -8,8 +9,7 @@ import 'package:provider/provider.dart';
 void main(){
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-    systemNavigationBarColor: Colors.lightBlue,
-    statusBarColor: Colors.blue
+    systemNavigationBarColor: Colors.lightBlue.shade600.withAlpha(210),
   ));
   runApp(Launch());
 }
@@ -21,6 +21,7 @@ class Launch extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<PlayerStateNotify>(create: (_)=>PlayerStateNotify()),
         ChangeNotifierProvider<PlaylistPosition>(create: (_)=>PlaylistPosition()),
+        ChangeNotifierProvider<ModelMiniPlayer>(create: (_)=>ModelMiniPlayer()),
       ],
       child: MaterialApp(
           routes: {

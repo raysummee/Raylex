@@ -170,7 +170,7 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
                 }
                 long time = exoPlayer.getCurrentPosition();
                 channel.invokeMethod("audio.onCurrentPosition", time);
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 20);
             }
             catch (Exception e) {
                 Log.w("ID", "When running handler", e);

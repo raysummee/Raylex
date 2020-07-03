@@ -13,10 +13,15 @@ class LibraryPages extends StatefulWidget {
 }
 
 class _LibraryPagesState extends State<LibraryPages> {
-
+  PlayerStateNotify appstate;
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    if(appstate==null)
+     appstate=Provider.of<PlayerStateNotify>(context);
+  }
   @override
   Widget build(BuildContext context) {
-    var appstate=Provider.of<PlayerStateNotify>(context);
     return Column(
       children: <Widget>[
         LibraryAppBar(),

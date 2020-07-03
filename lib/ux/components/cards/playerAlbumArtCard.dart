@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerAlbumArtCard extends StatefulWidget {
-  final List<SongInfo> songinfos;
-  final int index;
-  final PlayerLogic _playerLogic;
-  PlayerAlbumArtCard(this.songinfos, this.index, this._playerLogic);
-
   @override
   _PlayerAlbumArtCardState createState() => _PlayerAlbumArtCardState();
 }
@@ -18,22 +16,16 @@ class PlayerAlbumArtCard extends StatefulWidget {
 class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
   
   StreamSubscription _playlistPositionSubscription;
-  int index;
 
   @override
   void initState(){
     super.initState();
-    index = widget.index;
   }
 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
-    _playlistPositionSubscription = widget._playerLogic.onPlaylistPositionChanged.listen((pos) { 
-      setState(() {
-        index = pos;
-      });
-    });
+    
   }
 
   @override
@@ -44,6 +36,8 @@ class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
 
   @override
   Widget build(BuildContext context) {
+    var appstatelist = Provider.of<PlayerStateNotify>(context);
+    var appstatepos = Provider.of<PlaylistPosition>(context);
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
       decoration: BoxDecoration(
@@ -64,7 +58,7 @@ class _PlayerAlbumArtCardState extends State<PlayerAlbumArtCard> {
         child: Container(
           color: Colors.white,
           child: Image(
-            image: widget.songinfos.elementAt(index).albumArt!=null?FileImage(File(widget.songinfos.elementAt(index).albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
+            image: appstatelist.songinfos!=null&&appstatelist.songinfos.elementAt(appstatepos.index).albumArt!=null?FileImage(File(appstatelist.songinfos.elementAt(appstatepos.index).albumArt)):AssetImage("lib/assets/images/white-headphone.jpg"),
             fit: BoxFit.cover,
           ),
         ),
