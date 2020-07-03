@@ -22,10 +22,11 @@ Install flutter from git as described by the link: [flutter.dev/get-started](htt
     
 # Road Map
 
- - [ ] Designing the basic UI to start back-end part
+ - [x] Designing the basic UI to start back-end part
  - [x] Basic Backend Listing all songs and albums
- - [ ] Implementing Audio Interface
+ - [x] Implementing Audio Interface
  - [ ] Notifications
+ - [ ] Design Liked, search, history page
 
 ## Future Planning
 
