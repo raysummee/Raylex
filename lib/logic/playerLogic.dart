@@ -1,10 +1,13 @@
 
 import 'dart:async';
+import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:flutter/services.dart';
 
 //channel id for the audio operation
 const MethodChannel _platform = const MethodChannel("com.Raysummee.raylex/audio");
+bool isShuffle=true;
+int _isRepeat = 0;//0=no, 1=all, 2=single
 
 
 enum PlayerState{
@@ -84,6 +87,16 @@ class PlayerLogic{
       print("no more songs");
     }
   }
+
+  void suffle(PlayerStateNotify appstate){
+      appstate.songinfos.shuffle();
+  }
+
+   set repeat(isRepeat){
+     _isRepeat = isRepeat;
+   }
+
+   get repeat=>_isRepeat;
 
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
 

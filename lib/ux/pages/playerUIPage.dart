@@ -29,7 +29,7 @@ class PlayerUIPage extends StatelessWidget{
             //basics controls like seek, play pause, next, previous
             GroupPlayerControl(_playerLogic),
             //acco controls like mute speaker of headset set shuffle and repeats
-            GroupPlayerAccControl(),
+            GroupPlayerAccControl(_playerLogic),
           ],
         ),
       ),

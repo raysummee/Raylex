@@ -20,41 +20,30 @@ class AllSongsPage extends StatelessWidget {
                 preferredSize: Size.fromHeight(20),
               ),
               flexibleSpace: Container(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.lightBlue.shade300,
-                        Colors.lightBlue.shade500
-                      ],
+                child: FlexibleSpaceBar(
+                    background: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.asset(
+                          "lib/assets/images/white-headphone.jpg",
+                          height: 140, 
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    backgroundBlendMode: BlendMode.overlay
-                  ),
-                  child: FlexibleSpaceBar(
-                      background: Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(18),
-                          child: Image.asset(
-                            "lib/assets/images/white-headphone.jpg",
-                            height: 140, 
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                    centerTitle: true,
+                    title: Text(
+                      "All Songs",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
                       ),
-                      centerTitle: true,
-                      title: Text(
-                        "All Songs",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                  ),
+                    ),
                 ),
               ),
               expandedHeight: 250,
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.lightBlue.shade400,
               centerTitle: true,
               pinned: true,
              
