@@ -161,6 +161,14 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
         return pos;
     }
 
+    public void stopMusicAndRelease(){
+        if(exoPlayer!=null){
+            exoPlayer.stop(true);
+            exoPlayer.release();
+            exoPlayer = null;
+        }
+    }
+
 
     private final Runnable sendData = new Runnable(){
         public void run(){
@@ -208,6 +216,9 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
                 break;
             case "setPlaylistPosition":
                 result.success(setPlaylistPosition(call.argument("pos")));
+                break;
+            case "stopMusic":
+                stopMusicAndRelease();
                 break;
             default:
                 result.notImplemented();

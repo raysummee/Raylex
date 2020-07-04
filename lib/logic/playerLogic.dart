@@ -52,6 +52,14 @@ class PlayerLogic{
     });
   }
 
+  void stopMusic() async{
+    await _platform.invokeMethod("stopMusic");
+  }
+
+  void releasePlayer() async{
+    await _platform.invokeMethod("stopMusic");
+  }
+
   void pauseMusic() async{
     await _platform.invokeMethod("pauseMusic");
   }

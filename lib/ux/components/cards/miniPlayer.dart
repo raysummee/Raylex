@@ -101,6 +101,8 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
     super.dispose();
     _controller.dispose();
     _streamSubscriptionState.cancel();
+    _playerLogic.pauseMusic();
+    _playerLogic.stopMusic();
   }
 
 
