@@ -1,9 +1,6 @@
-import 'dart:async';
 
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
-import 'package:Raylex/logic/models/songInfo.dart';
-import 'package:Raylex/logic/playerLogic.dart';
 import 'package:Raylex/ux/components/animations/marqueeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

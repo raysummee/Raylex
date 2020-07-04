@@ -1,10 +1,7 @@
-import 'dart:async';
 
-import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
-import 'package:Raylex/ux/pages/playerUIPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +23,7 @@ class _VerticalListSimpleState extends State<VerticalListSimple> {
       child: ListView.builder(
         itemCount: widget.songinfo.length,
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 60),
         itemBuilder: (context, index){
           return ListTile(
             title: Text(

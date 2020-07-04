@@ -1,15 +1,13 @@
-import 'package:Raylex/logic/models/modelMiniplayer.dart';
-import 'package:Raylex/logic/models/playerStateNotify.dart';
-import 'package:Raylex/logic/models/playlistPosition.dart';
+
+import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
 import 'package:Raylex/ux/components/cards/miniPlayer.dart';
+import 'package:Raylex/ux/pages/allSongsPage.dart';
 import 'package:Raylex/ux/pages/historyPage.dart';
 import 'package:Raylex/ux/pages/libraryPages.dart';
 import 'package:Raylex/ux/pages/likedPage.dart';
-import 'package:Raylex/ux/pages/playerUIPage.dart';
 import 'package:Raylex/ux/pages/searchPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //nav pages 
 class NavPages extends StatefulWidget {
@@ -31,7 +29,8 @@ class _NavPagesState extends State<NavPages> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: false,
-      backgroundColor: Colors.white,
+      backgroundColor: CupertinoColors.white,
+      
       //body of the nav bar 
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -40,13 +39,14 @@ class _NavPagesState extends State<NavPages> {
             index: _currentIndex,
             //the body of the nav should be here index wise
             children: <Widget>[
-              LibraryPages(),
+              AllSongsPage(),
               LikedPage(),
               HistoryPage(),
               SearchPage()
             ],
           ),
-            MiniPlayer()
+            MiniPlayer(),
+            
         ],
       ),
       //nav bar

@@ -1,17 +1,12 @@
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/songQuery.dart';
-import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
 import 'package:Raylex/ux/components/lists/songList.dart';
-import 'package:Raylex/ux/components/lists/verticalListSimple.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
-class LibraryPages extends StatelessWidget {
-  
+class FutureSongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appstate = Provider.of<PlayerStateNotify>(context);

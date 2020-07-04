@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
-import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:Raylex/ux/pages/playerUIPage.dart';
 import 'package:flutter/material.dart';
