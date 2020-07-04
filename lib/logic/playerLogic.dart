@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 //channel id for the audio operation
 const MethodChannel _platform = const MethodChannel("com.Raysummee.raylex/audio");
-bool isShuffle=true;
+//bool isShuffle=true;
 int _isRepeat = 0;//0=no, 1=all, 2=single
 
 
@@ -70,12 +70,16 @@ class PlayerLogic{
     });
   }
 
-  void nextSong(List<SongInfo> songinfos, int currentpos) async{
+  void nextSong(List<SongInfo> songinfos, int currentpos, {bool playFromBeg:false}) async{
     if(currentpos<songinfos.length){
       playMusic(songinfos.elementAt(++currentpos).uri);
       print("nextsong ${++currentpos}");
     }else{
       print("no more songs");
+      if(playFromBeg){
+        playMusic(songinfos.elementAt(0).uri);
+        print("Playing from the beg");
+      }
     }
   }
 
@@ -88,9 +92,7 @@ class PlayerLogic{
     }
   }
 
-  void suffle(PlayerStateNotify appstate){
-      appstate.songinfos.shuffle();
-  }
+  
 
    set repeat(isRepeat){
      _isRepeat = isRepeat;

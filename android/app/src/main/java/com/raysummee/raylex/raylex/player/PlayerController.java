@@ -81,7 +81,7 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
     }
 
     public void playMusic(String uri){
-        if (exoPlayer!=null && lastUri.equals(uri)){
+        if (exoPlayer!=null && lastUri.equals(uri) && exoPlayer.getPlaybackState()!=Player.STATE_ENDED){
             if (!exoPlayer.getPlayWhenReady() || exoPlayer.getBufferedPosition()!=0){
                 exoPlayer.setPlayWhenReady(true);
             }else {

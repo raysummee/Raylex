@@ -30,8 +30,6 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
     super.didChangeDependencies();
     print("player didchangeddependencies");
     print("initial $_audioDuration");    
-    final appstatepos = Provider.of<PlaylistPosition>(context, listen: false);
-    final appstatelist = Provider.of<PlayerStateNotify>(context, listen: false);
 
     _subscriptionAudioPositionChanged = widget._playerLogic.onAudioPositionChanged.listen((pos) {
       if(mounted)
@@ -72,11 +70,11 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
           });   
           _animationController.reverse();
           print("song stopped at ${_playerSeekValue.inSeconds} of ${_audioDuration.inSeconds}");
-          if(_playerSeekValue.inSeconds == _audioDuration.inSeconds){
+          /*if(_playerSeekValue.inSeconds == _audioDuration.inSeconds){
             print("song ended");
             widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
             ++appstatepos.index;
-          }
+          }*/
         }
       }
     });

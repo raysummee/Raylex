@@ -16,19 +16,15 @@ class FutureSongList extends StatelessWidget {
         if(snap.data!=null){
           List<SongInfo> list = snap.data;
           appstate.songinfos = list;
-          return  list.isNotEmpty?SongList(list):Expanded(
-            child: Center(
-              child: Text("No songs found"),
-            )  
+          return  list.isNotEmpty?SongList(list):Center(
+            child: Text("No songs found"),
           );
         }else{
-          return Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(child: CupertinoActivityIndicator()),
-              ],
-            ),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(child: CupertinoActivityIndicator()),
+            ],
           );
         }
       }

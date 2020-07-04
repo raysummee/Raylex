@@ -21,6 +21,7 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
   StreamSubscription _streamSubscriptionState;
   bool isPlaying;
   PlayerLogic _playerLogic;
+  bool songended;
 
   @override
   void initState() {
@@ -36,6 +37,8 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
   void didChangeDependencies(){
     super.didChangeDependencies();
     _playerLogic.setMethodCallHandler();
+    final appstatelist = Provider.of<PlayerStateNotify>(context, listen: false);
+    final appstatepos = Provider.of<PlaylistPosition>(context, listen: false);
     _streamSubscriptionState = _playerLogic.onPlayerStateChanged.listen((state) {
       print("onStateChanged");
       
@@ -43,6 +46,7 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
         if(mounted){
           setState(() {
             isPlaying = true;
+            songended = false;
           });
           _controller.forward();
         }
@@ -57,11 +61,27 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
       }
       if(state == PlayerState.STOPPED){
         if(mounted){
+          if(!songended){
+            print("next song ${appstatepos.index+1}");
+            if(_playerLogic.repeat!=2){
+              _playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+              ++appstatepos.index;
+              if(_playerLogic.repeat==1 && appstatepos.index==appstatelist.songinfos.length-1){
+                _playerLogic.nextSong(appstatelist.songinfos, 0, playFromBeg: true);
+                appstatepos.index = 0;
+              }
+            }else{
+              _playerLogic.playMusic(appstatelist.songinfos.elementAt(appstatepos.index).uri);
+            }
+          }
           setState(() {
             isPlaying = false;
+            songended = true;
           });   
           _controller.reverse();
         }
+        print("song ended");
+        
       }
     });
     _playerLogic.onInstanceIsPlaying().then((isP) {
