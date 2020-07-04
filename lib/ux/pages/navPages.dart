@@ -1,4 +1,7 @@
 
+import 'dart:io';
+
+import 'package:Raylex/logic/backgroundAndroidRetain.dart';
 import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
 import 'package:Raylex/ux/components/cards/miniPlayer.dart';
 import 'package:Raylex/ux/pages/allSongsPage.dart';
@@ -27,87 +30,101 @@ class _NavPagesState extends State<NavPages> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: false,
-      backgroundColor: CupertinoColors.white,
-      
-      //body of the nav bar 
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: <Widget>[
-          IndexedStack(
-            index: _currentIndex,
-            //the body of the nav should be here index wise
-            children: <Widget>[
-              AllSongsPage(),
-              LikedPage(),
-              HistoryPage(),
-              SearchPage()
-            ],
-          ),
-            MiniPlayer(),
-            
-        ],
-      ),
-      //nav bar
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10)
+    return WillPopScope(
+      onWillPop: (){
+        if(Platform.isAndroid){
+          if(Navigator.of(context).canPop()){
+            return Future.value(true);
+          }else{
+            BackgroundAndroidRetain().appRetain();
+            return Future.value(false);
+          }
+        }else{
+          return Future.value(true);
+        }
+      },
+      child: Scaffold(
+        extendBody: false,
+        backgroundColor: CupertinoColors.white,
+        
+        //body of the nav bar 
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            IndexedStack(
+              index: _currentIndex,
+              //the body of the nav should be here index wise
+              children: <Widget>[
+                AllSongsPage(),
+                LikedPage(),
+                HistoryPage(),
+                SearchPage()
+              ],
+            ),
+              MiniPlayer(),
+              
+          ],
         ),
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10)
+        //nav bar
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10)
           ),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            selectedFontSize: 12,
-            iconSize: 40,
-            backgroundColor: Colors.lightBlue.withAlpha(200),
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white70,
-            type: BottomNavigationBarType.fixed,
-            showUnselectedLabels: true,
-            onTap: (index){
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.library_music,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10)
+            ),
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              selectedFontSize: 12,
+              iconSize: 40,
+              backgroundColor: Colors.lightBlue.withAlpha(200),
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white70,
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: true,
+              onTap: (index){
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.library_music,
+                  ),
+                  title: Text(
+                    "Library",
+                  ),
                 ),
-                title: Text(
-                  "Library",
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    CupertinoIcons.heart_solid,
+                  ),
+                  title: Text(
+                    "Liked",
+                  )
                 ),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  CupertinoIcons.heart_solid,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.explore,
+                  ),
+                  title: Text(
+                    "Explore",
+                  )
                 ),
-                title: Text(
-                  "Liked",
-                )
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.explore,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  title: Text(
+                    "Search",
+                  )
                 ),
-                title: Text(
-                  "Explore",
-                )
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                ),
-                title: Text(
-                  "Search",
-                )
-              ),
-            ]
+              ]
+            ),
           ),
         ),
       ),
