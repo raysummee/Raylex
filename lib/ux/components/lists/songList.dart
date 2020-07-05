@@ -40,12 +40,14 @@ class _SongListState extends State<SongList> {
                       ),
                       title: Text(
                         widget.songinfos.elementAt(index).title,
+                        maxLines: 1,
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
                         widget.songinfos.elementAt(index).artist,
+                        maxLines: 1,
                         style: TextStyle(
                           fontSize: 14
                         ),

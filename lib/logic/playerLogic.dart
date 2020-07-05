@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 //channel id for the audio operation
 const MethodChannel _platform = const MethodChannel("com.Raysummee.raylex/audio");
-//bool isShuffle=true;
+bool _isShuffle=false;
 int _isRepeat = 0;//0=no, 1=all, 2=single
 
 
@@ -107,6 +107,12 @@ class PlayerLogic{
    }
 
    get repeat=>_isRepeat;
+
+   set shuffle(isShuffle){
+     _isShuffle = isShuffle;
+   }
+
+   get shuffle=>_isShuffle;
 
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
 

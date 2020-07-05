@@ -137,6 +137,7 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
                         flex: 8,
                         child: GestureDetector(
                       onTap: (){
+                        if(appstatepos.index!=null&&appstate.songinfos!=null)
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PlayerUIPage(_playerLogic)));
                       },
                       child: Container(

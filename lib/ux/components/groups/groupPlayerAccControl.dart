@@ -45,9 +45,13 @@ class _GroupPlayerAccControlState extends State<GroupPlayerAccControl> {
                 child: IconButton(
                   icon: Icon(
                     FlutterIcons.shuffle_variant_mco,
-                    color: Colors.blue.shade900,
+                    color: widget._playerLogic.shuffle?Colors.blue.shade900:Colors.grey.shade600,
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    setState(() {
+                      widget._playerLogic.shuffle = !widget._playerLogic.shuffle;
+                    });
+                  },
                 ),
               ),
               IconButton(
