@@ -5,16 +5,8 @@ import 'package:Raylex/ux/components/cards/roundedImageCard.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalListRoundedImage extends StatelessWidget {
-  static Future<dynamic> _future() async{
-    return null;
-  }
-  final List<ModelPlaylistData> list= [
-    ModelPlaylistData("Raylex Select", "lib/assets/images/raylexselect.jpg", _future),
-    ModelPlaylistData("Top 200", "lib/assets/images/top200.jpg", _future),
-    ModelPlaylistData("Top 100", "lib/assets/images/top100s.jpg", _future),
-    ModelPlaylistData("Top 50", "lib/assets/images/top50s.jpg", _future),
-    ModelPlaylistData("Top 10", "lib/assets/images/top10s.jpg", _future),
-  ];
+  final List<ModelPlaylistData> list;
+  HorizontalListRoundedImage(this.list);
   @override
   Widget build(BuildContext context) {
     return Container(
