@@ -7,6 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class AllSongsPage extends StatelessWidget {
+  final String uri;
+  final String title;
+  final Future<dynamic> future;
+  AllSongsPage({
+    this.uri: "lib/assets/images/white-headphone.jpg",
+    this.title: "Playlist",
+    @required this.future
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +33,7 @@ class AllSongsPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
                         child: Image.asset(
-                          "lib/assets/images/white-headphone.jpg",
+                          uri,
                           height: 140, 
                           width: 150,
                           fit: BoxFit.cover,
@@ -34,7 +42,7 @@ class AllSongsPage extends StatelessWidget {
                     ),
                     centerTitle: true,
                     title: Text(
-                      "All Songs",
+                      title,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold
@@ -52,7 +60,7 @@ class AllSongsPage extends StatelessWidget {
                 icon: Icon(
                   Icons.arrow_back_ios
                 ), 
-                onPressed: (){}
+                onPressed: ()=>Navigator.of(context).pop()
               ),
               actions: <Widget>[
                 IconButton(
@@ -65,7 +73,7 @@ class AllSongsPage extends StatelessWidget {
             )
           ];
         },
-        body: FutureSongList(),
+        body: FutureSongList(future),
       )
     );
   }

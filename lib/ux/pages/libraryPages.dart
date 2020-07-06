@@ -2,6 +2,7 @@ import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/songQuery.dart';
 import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
+import 'package:Raylex/ux/components/lists/horizontalListRoundedImage.dart';
 import 'package:Raylex/ux/components/lists/songList.dart';
 import 'package:Raylex/ux/components/lists/verticalListSimple.dart';
 import 'package:Raylex/ux/pages/allSongsPage.dart';
@@ -63,7 +64,10 @@ class LibraryPages extends StatelessWidget {
             ),
             onTap: (){
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context)=> AllSongsPage()
+                builder: (context)=> AllSongsPage(
+                  title: "All Songs",
+                  future: SongQuery.allSongs(),
+                )
               ));
             },
           ),
@@ -73,7 +77,7 @@ class LibraryPages extends StatelessWidget {
             indent: 15,
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(16, 20, 10, 10),
+            padding: EdgeInsets.fromLTRB(16, 20, 10, 0),
             child: Text(
               "Lets Stream".toUpperCase(),
               style: TextStyle(
@@ -83,6 +87,18 @@ class LibraryPages extends StatelessWidget {
               )
             ),
           ),
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 5, 10, 5),
+            child: Text(
+              "Raylex Exclusive".toUpperCase(),
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 18
+              )
+            ),
+          ),
+          HorizontalListRoundedImage()
         ],
       ) 
     );

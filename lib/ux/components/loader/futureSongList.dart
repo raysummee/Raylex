@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FutureSongList extends StatelessWidget {
+  final Future<dynamic> future;
+  FutureSongList(this.future);
   @override
   Widget build(BuildContext context) {
     var appstate = Provider.of<PlayerStateNotify>(context, listen: false);
     return FutureBuilder(
-      future: SongQuery.allSongs(),
+      future: future,
       builder: (context, snap){
         if(snap.data!=null){
           List<SongInfo> list = snap.data;
