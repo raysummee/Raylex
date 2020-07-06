@@ -9,8 +9,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 class AllSongsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: NestedScrollView(
+    return Scaffold(
+      body: NestedScrollView(
         headerSliverBuilder: (context, innerscroll){
           return <Widget>[
             SliverAppBar(

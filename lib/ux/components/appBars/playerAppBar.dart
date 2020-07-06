@@ -51,10 +51,29 @@ class PlayerAppBar extends StatelessWidget {
             flex: 1,
             child: Container(
               alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: Icon(Icons.more_vert), 
-                onPressed: (){},
-              ),
+              child: PopupMenuButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                onSelected: (selected){
+                  switch (selected) {
+                    case 0:
+                      print("selected add to liked");
+                      break;
+                    case 1:
+                      print("selected equalizer");
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Text("Add to Liked"),
+                    value: 0,
+                  ),
+                  PopupMenuItem(
+                    child: Text("Equalizer"),
+                    value: 1,
+                  ),
+                ]
+              )
             )
           )
         ],

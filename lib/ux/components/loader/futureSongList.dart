@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class FutureSongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appstate = Provider.of<PlayerStateNotify>(context);
+    var appstate = Provider.of<PlayerStateNotify>(context, listen: false);
     return FutureBuilder(
       future: SongQuery.allSongs(),
       builder: (context, snap){

@@ -22,6 +22,7 @@ class NavPages extends StatefulWidget {
 class _NavPagesState extends State<NavPages> {
   //the default index and initialising index of the nav bar
   int _currentIndex = 0;
+  BuildContext c1;
 
   @override
   void didChangeDependencies(){
@@ -32,6 +33,7 @@ class _NavPagesState extends State<NavPages> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
+        if(!Navigator.of(c1).canPop()){
         if(Platform.isAndroid){
           if(Navigator.of(context).canPop()){
             return Future.value(true);
@@ -42,6 +44,10 @@ class _NavPagesState extends State<NavPages> {
         }else{
           return Future.value(true);
         }
+        }else{
+          Navigator.of(c1).pop();
+          return Future.value(false);
+        }
       },
       child: Scaffold(
         extendBody: false,
@@ -51,18 +57,27 @@ class _NavPagesState extends State<NavPages> {
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            IndexedStack(
-              index: _currentIndex,
-              //the body of the nav should be here index wise
-              children: <Widget>[
-                AllSongsPage(),
-                LikedPage(),
-                HistoryPage(),
-                SearchPage()
-              ],
+            Navigator(
+
+              onGenerateRoute: (settings){
+                return MaterialPageRoute(
+                  builder: (context){
+                    c1 = context;
+                    return IndexedStack(
+                      index: _currentIndex,
+                      //the body of the nav should be here index wise
+                      children: <Widget>[
+                        LibraryPages(),
+                        LikedPage(),
+                        HistoryPage(),
+                        SearchPage()
+                      ],
+                    );
+                  }
+                );
+              },
             ),
-              MiniPlayer(),
-              
+            MiniPlayer(),  
           ],
         ),
         //nav bar
@@ -86,9 +101,18 @@ class _NavPagesState extends State<NavPages> {
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
               onTap: (index){
-                setState(() {
-                  _currentIndex = index;
-                });
+                if(!Navigator.of(c1).canPop()){
+                if(_currentIndex!=index)
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                }else{
+                  Navigator.of(c1).pop();
+                  if(_currentIndex!=index)
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                }
               },
               items: [
                 BottomNavigationBarItem(

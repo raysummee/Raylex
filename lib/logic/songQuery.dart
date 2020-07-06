@@ -29,7 +29,8 @@ class SongQuery{
     var completer = new Completer();
 
     // At some time you need to complete the future:
-
+    //making it lazy wait for 1 sec
+    await Future.delayed(Duration(seconds: 1));
     Map params = <String, dynamic>{
       "handlePermissions": true,
       "executeAfterPermissionGranted": true,
@@ -40,4 +41,5 @@ class SongQuery{
     completer.complete(mySongs);
     return completer.future;
   }
+  
 }

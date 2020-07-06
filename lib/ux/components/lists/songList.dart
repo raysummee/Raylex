@@ -28,6 +28,7 @@ class _SongListState extends State<SongList> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   itemBuilder: (context, index){
                     return ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       leading: Image(
                         fit: BoxFit.cover,
                         height: 40,
@@ -41,15 +42,21 @@ class _SongListState extends State<SongList> {
                       title: Text(
                         widget.songinfos.elementAt(index).title,
                         maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
                         style: TextStyle(
                           fontSize: 16,
+                          color: appstatepos.index==index?Colors.red:Colors.black
                         ),
                       ),
                       subtitle: Text(
                         widget.songinfos.elementAt(index).artist,
                         maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
                         style: TextStyle(
-                          fontSize: 14
+                          fontSize: 14,
+                          
                         ),
                       ),
                       trailing: IconButton(
