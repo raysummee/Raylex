@@ -1,10 +1,11 @@
 import 'package:Raylex/ux/pages/allSongsPage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class RoundedImageCard extends StatelessWidget {
   final String imageUri;
   final String title;
-  final Future<dynamic> future;
+  final AsyncValueGetter future;
   RoundedImageCard(this.imageUri, this.title, this.future);
   @override
   Widget build(BuildContext context) {

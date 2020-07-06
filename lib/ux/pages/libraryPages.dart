@@ -66,7 +66,7 @@ class LibraryPages extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context)=> AllSongsPage(
                   title: "All Songs",
-                  future: SongQuery.allSongs(),
+                  future: SongQuery.allSongs,
                 )
               ));
             },

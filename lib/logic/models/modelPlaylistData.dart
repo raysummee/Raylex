@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
+
 class ModelPlaylistData{
   String title;
   String imageuri;
-  Future<dynamic> future;
+  VoidCallback future;
 
   ModelPlaylistData(
     this.title,

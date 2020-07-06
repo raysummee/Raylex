@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:Raylex/ux/components/lists/songList.dart';
 import 'package:Raylex/ux/components/loader/futureSongList.dart';
 import 'package:Raylex/ux/pages/libraryPages.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class AllSongsPage extends StatelessWidget {
   final String uri;
   final String title;
-  final Future<dynamic> future;
+  final AsyncValueGetter future;
   AllSongsPage({
     this.uri: "lib/assets/images/white-headphone.jpg",
     this.title: "Playlist",
