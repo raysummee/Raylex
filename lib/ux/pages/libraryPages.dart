@@ -111,8 +111,8 @@ class LibraryPages extends StatelessWidget {
           ),
           
           //HorizontalListRoundedImage(),
-          Expanded(
-            child: ListView.builder(
+          
+            ListView.builder(
               shrinkWrap: true,
               primary: false,
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -138,7 +138,7 @@ class LibraryPages extends StatelessWidget {
                 );
               }
             ),
-          )
+          
         ],
       ) 
     );
