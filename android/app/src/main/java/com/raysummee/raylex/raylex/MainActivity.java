@@ -22,6 +22,7 @@ public class MainActivity extends FlutterActivity {
         super.onCreate(savedInstanceState);
         PlayerController.registerWith(registrarFor("com.Raysummee.raylex/audio"));
         MusicFinderPlugin.registerWith(registrarFor("com.Raysummee.raylex/finder"));
+        com.tekartik.sqflite.SqflitePlugin.registerWith(registrarFor("com.tekartik.sqflite"));
         new MethodChannel(getFlutterView(), "com.Raysummee.raylex/androidRetain").setMethodCallHandler(
                 (call, result) -> {
                     if(call.method.equals("sendToBackground")){

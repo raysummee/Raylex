@@ -91,23 +91,7 @@ public class PlayerController implements MethodChannel.MethodCallHandler {
             initExoPlayer(uri);
         }
         handler.post(sendData);
-        switch (exoPlayer.getPlaybackState()){
-            case Player.STATE_IDLE:
-                channel.invokeMethod("audio,onPause",null);
-                break;
-            case Player.STATE_READY:
-                if(exoPlayer.getPlayWhenReady())
-                    channel.invokeMethod("audio.onStart", exoPlayer.getDuration());
-                else
-                    channel.invokeMethod("audio.onPause", null);
-                break;
-            case Player.STATE_ENDED:
-                channel.invokeMethod("audio.onStop", null);
-                break;
-            case Player.STATE_BUFFERING:
-                channel.invokeMethod("audio.onBuffer", null);
-                break;
-        }
+        
 
     }
 

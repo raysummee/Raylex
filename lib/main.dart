@@ -1,4 +1,5 @@
 import 'package:Raylex/logic/models/modelMiniplayer.dart';
+import 'package:Raylex/logic/models/notifyLyrics.dart';
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/ux/pages/navPages.dart';
@@ -22,6 +23,7 @@ class Launch extends StatelessWidget {
         ChangeNotifierProvider<PlayerStateNotify>(create: (_)=>PlayerStateNotify()),
         ChangeNotifierProvider<PlaylistPosition>(create: (_)=>PlaylistPosition()),
         ChangeNotifierProvider<ModelMiniPlayer>(create: (_)=>ModelMiniPlayer()),
+        ChangeNotifierProvider<NotifyLyrics>(create: (_)=>NotifyLyrics(),)
       ],
       child: MaterialApp(
           routes: {

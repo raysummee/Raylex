@@ -21,7 +21,7 @@ public class PlayerStateListener implements Player.EventListener {
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState){
             case Player.STATE_IDLE:
-                channel.invokeMethod("audio,onPause",null);
+                channel.invokeMethod("audio.onPause",null);
                 break;
             case Player.STATE_READY:
                 if(playWhenReady)

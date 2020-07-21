@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   flutter_icons: ^1.1.0
   provider: any
+  sqflite:
+  path:
 
   
 

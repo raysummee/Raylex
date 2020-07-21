@@ -21,7 +21,7 @@ class PlayerUIPage extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             //the top portion playlist name, back, menu consist here
-            PlayerAppBar(),
+            PlayerAppBar(_playerLogic),
             //the album art is consist here
             PlayerAlbumArtCard(),
             //song name and artist name here

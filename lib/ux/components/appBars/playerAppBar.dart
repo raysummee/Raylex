@@ -1,6 +1,12 @@
+import 'package:Raylex/logic/playerLogic.dart';
+import 'package:Raylex/ux/components/dialog/editLyricsDialog.dart';
+import 'package:Raylex/ux/pages/lyricsPage.dart';
 import 'package:flutter/material.dart';
 
 class PlayerAppBar extends StatelessWidget {
+  final bool inLyrics;
+  final PlayerLogic playerLogic;
+  PlayerAppBar(this.playerLogic, {this.inLyrics:false});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,6 +67,16 @@ class PlayerAppBar extends StatelessWidget {
                     case 1:
                       print("selected equalizer");
                       break;
+                    case 2:
+                      if(!inLyrics){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_)=> LyricsPage(playerLogic))
+                        );
+                      }
+                      break;
+                    case 3:
+                      showDialog(context: context, builder: (_)=>EditLyricsDialog());
+                      break;
                   }
                 },
                 itemBuilder: (context) => [
@@ -71,6 +87,16 @@ class PlayerAppBar extends StatelessWidget {
                   PopupMenuItem(
                     child: Text("Equalizer"),
                     value: 1,
+                  ),
+                  if(!inLyrics)...[
+                    PopupMenuItem(
+                      child: Text("Lyrics"),
+                      value: 2,
+                    )
+                  ],
+                  PopupMenuItem(
+                    child: Text("Edit Lyrics"),
+                    value: 3,
                   ),
                 ]
               )
