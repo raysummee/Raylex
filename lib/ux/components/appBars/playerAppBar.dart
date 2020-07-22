@@ -1,7 +1,12 @@
+import 'package:Raylex/logic/loveDb.dart';
+import 'package:Raylex/logic/models/playerStateNotify.dart';
+import 'package:Raylex/logic/models/playlistPosition.dart';
+import 'package:Raylex/logic/models/songInfo.dart';
 import 'package:Raylex/logic/playerLogic.dart';
 import 'package:Raylex/ux/components/dialog/editLyricsDialog.dart';
 import 'package:Raylex/ux/pages/lyricsPage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerAppBar extends StatelessWidget {
   final bool inLyrics;
@@ -9,6 +14,8 @@ class PlayerAppBar extends StatelessWidget {
   PlayerAppBar(this.playerLogic, {this.inLyrics:false});
   @override
   Widget build(BuildContext context) {
+    var appstatelist = Provider.of<PlayerStateNotify>(context);
+    var appstatepos = Provider.of<PlaylistPosition>(context);
     return Container(
       margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
       alignment: Alignment.topLeft,
@@ -62,7 +69,8 @@ class PlayerAppBar extends StatelessWidget {
                 onSelected: (selected){
                   switch (selected) {
                     case 0:
-                      print("selected add to liked");
+                      SongInfo songInfo = appstatelist.songinfos.elementAt(appstatepos.index);
+                      LoveDb().insertLove(songInfo);
                       break;
                     case 1:
                       print("selected equalizer");

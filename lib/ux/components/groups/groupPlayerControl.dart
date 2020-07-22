@@ -199,8 +199,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){
-                  widget._playerLogic.prevSong(appstatelist.songinfos, appstatepos.index);
-                  --appstatepos.index;
+                  if(appstatepos.index<appstatelist.songinfos.length-1){
+                    widget._playerLogic.prevSong(appstatelist.songinfos, appstatepos.index);
+                    --appstatepos.index;
+                  }
                 },
               ),
               IconButton(
@@ -229,8 +231,10 @@ class _GroupPlayerControlState extends State<GroupPlayerControl> with TickerProv
                   color: Colors.grey.shade600,
                 ),
                 onPressed: (){
-                  widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
-                  ++appstatepos.index;
+                  if(appstatepos.index<appstatelist.songinfos.length-1){
+                    widget._playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+                    ++appstatepos.index;
+                  }
                 }
               )
             ],

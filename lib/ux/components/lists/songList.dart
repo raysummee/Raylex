@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Raylex/logic/loveDb.dart';
 import 'package:Raylex/logic/models/playerStateNotify.dart';
 import 'package:Raylex/logic/models/playlistPosition.dart';
 import 'package:Raylex/logic/models/songInfo.dart';
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class SongList extends StatefulWidget {
   final List<SongInfo> songinfos;
-  SongList(this.songinfos);
+  final bool isInLovePlaylist;
+  SongList(this.songinfos,{this.isInLovePlaylist:false});
   @override
   _SongListState createState() => _SongListState();
 }
@@ -21,6 +23,7 @@ class _SongListState extends State<SongList> {
   @override
   Widget build(BuildContext context) {
     var appstatepos = Provider.of<PlaylistPosition>(context);
+    var appstatelist = Provider.of<PlayerStateNotify>(context);
     return Container(
       alignment: Alignment.center,
       child: ListView.builder(
@@ -46,7 +49,7 @@ class _SongListState extends State<SongList> {
                         overflow: TextOverflow.fade,
                         style: TextStyle(
                           fontSize: 16,
-                          color: appstatepos.index==index?Colors.red:Colors.black
+                          color: appstatepos.index==index&&appstatelist.songinfos.elementAt(index).title==widget.songinfos.elementAt(index).title?Colors.red:Colors.black
                         ),
                       ),
                       subtitle: Text(
@@ -59,14 +62,42 @@ class _SongListState extends State<SongList> {
                           
                         ),
                       ),
-                      trailing: IconButton(
-                        icon: Icon(
-                          FlutterIcons.md_more_ion
-                        ),
-                        onPressed: (){},
+                      trailing: PopupMenuButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        onSelected: (selected){
+                          switch (selected) {
+                            case 0:
+                              SongInfo songInfo = widget.songinfos.elementAt(index);
+                              LoveDb().insertLove(songInfo);
+                              break;
+                            case 2:
+                              LoveDb().deleteLove(widget.songinfos.elementAt(index).id);
+                              
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          ((){
+                            if(widget.isInLovePlaylist){
+                              return PopupMenuItem(
+                                child: Text("Delete from Liked"),
+                                value: 2,
+                              );
+                            }else{
+                              return PopupMenuItem(
+                                child: Text("Add to Liked"),
+                                value: 0,
+                              );
+                            }
+                          }()),
+                          PopupMenuItem(
+                            child: Text("Play Next"),
+                            value: 1,
+                          ),
+                        ]
                       ),
                       onTap: (){          
                         PlayerLogic().playMusic(widget.songinfos.elementAt(index).uri);
+                        appstatelist.songinfos = widget.songinfos;
                         appstatepos.index = index;
                       },
                     );

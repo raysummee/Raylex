@@ -18,7 +18,6 @@ class FutureSongList extends StatelessWidget {
       builder: (context, snap){
         if(snap.data!=null){
           List<SongInfo> list = snap.data;
-          appstate.songinfos = list;
           return  list.isNotEmpty?SongList(list):Center(
             child: Text("No songs found"),
           );

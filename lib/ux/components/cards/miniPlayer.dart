@@ -64,8 +64,10 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
           if(!songended){
             print("next song ${appstatepos.index+1}");
             if(_playerLogic.repeat!=2){
-              _playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
-              ++appstatepos.index;
+              if(appstatepos.index<appstatelist.songinfos.length-1){
+                _playerLogic.nextSong(appstatelist.songinfos, appstatepos.index);
+                ++appstatepos.index;
+              }
               if(_playerLogic.repeat==1 && appstatepos.index==appstatelist.songinfos.length-1){
                 _playerLogic.nextSong(appstatelist.songinfos, 0, playFromBeg: true);
                 appstatepos.index = 0;
@@ -191,7 +193,7 @@ class _MiniPlayerState extends State<MiniPlayer> with SingleTickerProviderStateM
                               color: Colors.white,
                               icon: Icon(FlutterIcons.fast_forward_mdi),
                               onPressed: (){
-                                if(appstate.songinfos!=null&&appstatepos!=null){
+                                if(appstate.songinfos!=null&&appstatepos!=null&&appstatepos.index<appstate.songinfos.length-1){
                                   _playerLogic.nextSong(appstate.songinfos, appstatepos.index);
                                   ++appstatepos.index;
                                 }

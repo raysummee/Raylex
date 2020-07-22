@@ -1,4 +1,5 @@
 import 'package:Raylex/ux/components/lists/songList.dart';
+import 'package:Raylex/ux/components/loader/futureLoveSongsList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -28,8 +29,8 @@ class LikedPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Text('data'),
-            Text("da")
+            FutureLoveSongList(),
+            Center(child: Text("Nothing is here"),)
           ]
         ),
       ),

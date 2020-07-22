@@ -5,12 +5,13 @@ import 'package:Raylex/logic/backgroundAndroidRetain.dart';
 import 'package:Raylex/ux/components/appBars/libraryAppBar.dart';
 import 'package:Raylex/ux/components/cards/miniPlayer.dart';
 import 'package:Raylex/ux/pages/allSongsPage.dart';
-import 'package:Raylex/ux/pages/historyPage.dart';
+import 'package:Raylex/ux/pages/AboutPage.dart';
 import 'package:Raylex/ux/pages/libraryPages.dart';
 import 'package:Raylex/ux/pages/likedPage.dart';
 import 'package:Raylex/ux/pages/searchPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 //nav pages 
 class NavPages extends StatefulWidget {
@@ -69,8 +70,8 @@ class _NavPagesState extends State<NavPages> {
                       children: <Widget>[
                         LibraryPages(),
                         LikedPage(),
-                        HistoryPage(),
-                        SearchPage()
+                        SearchPage(),
+                        AboutPage()
                       ],
                     );
                   }
@@ -133,18 +134,18 @@ class _NavPagesState extends State<NavPages> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.explore,
-                  ),
-                  title: Text(
-                    "Explore",
-                  )
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
                     Icons.search,
                   ),
                   title: Text(
                     "Search",
+                  )
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.lightbulb_outline,
+                  ),
+                  title: Text(
+                    "About",
                   )
                 ),
               ]

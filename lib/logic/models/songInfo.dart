@@ -24,5 +24,19 @@ class SongInfo{
     albumArt = m["albumArt"];
     trackId = m["trackId"];
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'artist': artist,
+      'title': title,
+      'album': album,
+      'albumId': albumId,
+      'duration': duration,
+      'uri': uri,
+      'albumArt': albumArt,
+      'trackId': trackId
+    };
+  }
   
 }

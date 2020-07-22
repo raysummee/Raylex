@@ -79,7 +79,7 @@ class PlayerLogic{
   }
 
   void nextSong(List<SongInfo> songinfos, int currentpos, {bool playFromBeg:false}) async{
-    if(currentpos<songinfos.length){
+    if(currentpos<songinfos.length-1){
       playMusic(songinfos.elementAt(++currentpos).uri);
       print("nextsong ${++currentpos}");
     }else{
